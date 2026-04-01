@@ -1,4 +1,5 @@
 🔍 FindIt — Lost & Found Web Application
+---
 📌 Project Description
 FindIt is a full-stack web application built with Angular (frontend) and Django + Django REST Framework (backend). The application allows users to post lost or found items, browse announcements, submit claims, and track the return process in real-time.
 ---
