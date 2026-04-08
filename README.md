@@ -84,9 +84,13 @@ Frontend (Angular)
 Pages:
 
 Home — list of ads + filters
+
 Login / Register
+
 Item Detail — info + Claim button
+
 My Items / My Claims
+
 Create Item
 
 Forms (ngModel):
