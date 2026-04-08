@@ -1,116 +1,143 @@
 🔍 FindIt — Lost & Found Web Application
----
 📌 Project Description
-FindIt is a full-stack web application built with Angular (frontend) and Django + Django REST Framework (backend). The application allows users to post lost or found items, browse announcements, submit claims, and track the return process in real-time.
----
-🚀 Features
----
-👤 User Features
-
-* User login and authentication (JWT)
-* Browse lost and found items with filters
-* Publish new lost/found announcements (with photo)
-* Submit claims for found items
-* View and manage own items and claims
-* Track return status
----
-🛠️ Management Features
-
-* Create, update, and delete own announcements
-* Approve or reject claims
-* Mark items as returned
-* View all active announcements
----
-👥 Group Members
-
-* Sabyrkhanov Aldair
-* Zhazykbayeva Tomiris
-* Bakhtybay Zhengis
----
+-----------------------
+FindIt is a full-stack web application (Angular + Django REST) ​​where users post lost/found items, search for them, submit requests, and track returns.
+-----------------------
 🎯 Goal
-The goal of this project is to build a fully functional lost & found platform that satisfies all course requirements and demonstrates practical skills in Angular and Django.
----
-Detailed Description
-Models (Django)
-
-User — standard (author of ads and requests)
-
+-----------------------
+To create a full-fledged Lost & Found platform that covers all course requirements (CRUD, auth, API, frontend) and demonstrates practical skills.
+-----------------------
+🚀 Features
+-----------------------
+👤 User
+Registration / Login (JWT)
+View Items (Filters, Search)
+Publish Items (with Photos)
+Submit a Claim
+View your items and claims
+Track Status (Lost / Found / Returned)
+-----------------------
+🛠️ Management
+Edit / Delete your items
+Approve / Reject claims
+Mark an item as Returned
+View Active Items
+-----------------------
+🧩 Models (Django)
+-----------------------
+User — Standard
+-----------------------
 Item
 
 title
 description
-category (phone / keys / document / clothes / other)
+category (choices or FK)
 status (Lost / Found / Claimed / Returned)
 location
 date
-image (ImageField + Pillow)
+image
 is_active
-
+user (FK)
+-----------------------
 Claim
 
 item (FK)
 user (FK)
-description (proof that the item is theirs)
+description
+-----------------------
+Category (optional)
+-----------------------
+Message
 
-Category (optional, if not choices)
-
-Message (chat for the request)
-
-claim (or item)
+claim / item
 sender
 text
-
+-----------------------
 Relationships:
 
 Item → User
 Claim → Item, User
-Message → Claim / Item
-(optional) Item → Category
-A custom manager can be created (e.g.: lost_items(), found_items())
-Backend (Django REST)
-CRUD for Item
-Item/Claim are automatically bound to request.user
-JWT auth (login / register / logout)
+Message → Claim/Item
+Item → Category (optional)
+custom manager (lost_items, found_items)
+⚙️ Backend (Django REST)
+CRUD: Item
+Claim creation + processing
+Auto-binding to request.user
+JWT auth
+-----------------------
 Serializers:
-2 regular (e.g., search / claim)
-2 ModelSerializer (Item, Claim)
+
+ItemSerializer(ModelSerializer)
+ClaimSerializer(ModelSerializer)
+SearchSerializer
+SimpleClaimSerializer
+-----------------------
 Views:
-2 FBV (@api_view)
-2 CBV (APIView)
-CORS (for Angular)
+-----------------------
+FBV:
+list of active items
+creating a claim
+CBV:
+Item CRUD
+Item detail
+CORS
 Postman collection
-Frontend (Angular)
-
-Pages:
-
-Home — list of ads + filters
-
-Login / Register
-
-Item Detail — info + Claim button
-
+-----------------------
+🌐 API Endpoints (plan)
+🔐 Auth
+POST /api/auth/register/ - registration
+POST /api/auth/login/ - receiving JWT
+POST /api/auth/logout/
+📦 Items
+GET /api/items/ — list (with filters: status, category, location)
+POST /api/items/ — create a claim
+GET /api/items/{id}/ — detail page
+PUT /api/items/{id}/ — edit
+DELETE /api/items/{id}/ — delete
+🙋 Claims
+POST /api/items/{id}/claim/ — submit a claim
+GET /api/claims/ — my claims
+GET /api/claims/{id}/ — details
+✅ Claim Actions
+POST /api/claims/{id}/approve/ — confirm
+POST /api/claims/{id}/reject/ — reject
+🔄 Item Status
+POST /api/items/{id}/mark-returned/ — mark as Returned
+💬 Messages (optional)
+GET /api/claims/{id}/messages/
+POST /api/claims/{id}/messages/
+🖥️ Frontend (Angular)
+-----------------------
+Pages
+Home (list + filters)
+Login/Register
+Item Detail
 My Items / My Claims
-
-Create Item
-
-Forms (ngModel):
-
-Login / Register
-Create / Edit Item
-Submit Claim
-
-Actions (click → API):
-
-Create ad
+Create/Edit Item
+-----------------------
+Forms (ngModel)
+Auth
+Item create/edit
+Claim submission
+-----------------------
+Actions (click → API)
+Create item
 Submit claim
-Confirm / Reject
-Mark as returned
-(additional) Search / Filter
-
-Technical:
-
+Approve/reject
+Mark returned
+Search / filter
+-----------------------
+Technical
 One service (HttpClient)
-Interceptor (JWT)
+JWT interceptor
 Error handling
-@if for roles/statuses
-Basic responsive CSS
+@if (roles, statuses)
+Responsive UI
+-----------------------
+✨ Additional goals
+Search + filters
+Color statuses
+Moderation (is_active)
+Return history
+-----------------------
