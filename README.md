@@ -123,3 +123,9 @@ The main goal of this project is to build a complete full-stack web application 
 cd frontend
 npm install
 ng serve
+```
+
+### Backend
+```bash
+pip install -r requirements.txt
+```
