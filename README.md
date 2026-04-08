@@ -56,10 +56,15 @@ text
 Relationships:
 
 Item → User
+
 Claim → Item, User
+
 Message → Claim/Item
+
 Item → Category (optional)
+
 custom manager (lost_items, found_items)
+-----------------------
 ⚙️ Backend (Django REST)
 CRUD: Item
 Claim creation + processing
@@ -85,28 +90,51 @@ CORS
 Postman collection
 -----------------------
 🌐 API Endpoints (plan)
+
 🔐 Auth
+
 POST /api/auth/register/ - registration
+
 POST /api/auth/login/ - receiving JWT
+
 POST /api/auth/logout/
+
 📦 Items
+
 GET /api/items/ — list (with filters: status, category, location)
+
 POST /api/items/ — create a claim
+
 GET /api/items/{id}/ — detail page
+
 PUT /api/items/{id}/ — edit
+
 DELETE /api/items/{id}/ — delete
+
 🙋 Claims
+
 POST /api/items/{id}/claim/ — submit a claim
+
 GET /api/claims/ — my claims
+
 GET /api/claims/{id}/ — details
+
 ✅ Claim Actions
+
 POST /api/claims/{id}/approve/ — confirm
+
 POST /api/claims/{id}/reject/ — reject
+
 🔄 Item Status
+
 POST /api/items/{id}/mark-returned/ — mark as Returned
+
 💬 Messages (optional)
+
 GET /api/claims/{id}/messages/
+
 POST /api/claims/{id}/messages/
+-----------------------
 🖥️ Frontend (Angular)
 -----------------------
 Pages
