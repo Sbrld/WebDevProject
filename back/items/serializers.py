@@ -11,3 +11,19 @@ class ItemSerializer(serializers.ModelSerializer):
             'is_active',  'created_at'
         ]
         read_only_fields = ['owner', 'created_at']
+
+class ItemCreateSerializer(serializers.ModelSerializer):
+        class Meta:
+            model = Item
+            fields = ['title', 'description', 'category', 'status', 'location', 'date', 'image']
+
+
+class ItemFilterSerializer(serializers.Serializer):
+    category = serializers.ChoiceField(choices=['phone', 'keys', 'documents', 'backpack', 'clothes', 'other'], required=False)
+    status = serializers.ChoiceField(choices=['lost', 'found', 'claimed', 'returned'], required=False)
+    location = serializers.CharField(max_length=255, required=False)
+    date_from = serializers.DateField(required=False)
+    date_to = serializers.DateField(required=False)
+
+class ItemStatusSerializer(serializers.Serializer):
+    status = serializers.ChoiceField(choices=['lost', 'found', 'claimed', 'returned'])
