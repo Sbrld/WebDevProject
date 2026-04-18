@@ -35,7 +35,7 @@ def register_view(request):
 def login_view(request):
     serializer = LoginSerializer(data=request.data)
     if serializer.is_valid():
-        user = serializer.authenticate(
+        user = authenticate(
             username=serializer.validated_data['username'],
             password=serializer.validated_data['password']
         )
