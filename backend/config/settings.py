@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     #our apps
     'api',
 ]
+AUTH_USER_MODEL = 'accounts.User'
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',

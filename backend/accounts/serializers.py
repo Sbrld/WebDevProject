@@ -15,7 +15,7 @@ class RegisterSerializer(serializers.Serializer):
             raise serializers.ValidationError('Passwords do not match')
         if User.objects.filter(username=data['username']).exists():
             raise serializers.ValidationError('Username already exists')
-        if user.objects.filter(email=data['email']).exists():
+        if User.objects.filter(email=data['email']).exists():
             raise serializers.ValidationError('Email already exists')
         return data
 
@@ -37,5 +37,11 @@ class LoginSerializer(serializers.Serializer):
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'username', 'email', 'bio', 'phone', 'avatar', 'created_at', 'updated_at']
+        fields = ['id',
+                  'username',
+                  'email',
+                  'bio',
+                  'phone',
+                  'avatar',
+                  'created_at']
         read_only_fields = ['id','username' , 'created_at']
