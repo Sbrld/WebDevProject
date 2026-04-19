@@ -1,0 +1,71 @@
+<div class="profile-page">
+  <div class="glow glow-top"></div>
+
+  @if (loadError) {
+    <div class="state-card">
+      <div class="state-icon err">✕</div>
+      <p class="state-title">Не удалось загрузить профиль</p>
+      <p class="state-sub">Возможно сессия истекла</p>
+      <a routerLink="/login" class="btn-ghost">Войти заново</a>
+    </div>
+  } @else if (!user) {
+    <div class="state-card">
+      <div class="loader-ring"></div>
+      <p class="state-sub">Загружаем профиль...</p>
+    </div>
+  } @else {
+    <div class="profile-card">
+      <div class="p-header">
+        <a routerLink="/" class="back-btn">← Главная</a>
+        <button class="edit-toggle" (click)="toggleEdit()">
+          @if (editMode) { Отмена } @else { Редактировать }
+        </button>
+      </div>
+
+      <div class="avatar-row">
+        <div class="avatar">{{ getInitial() }}</div>
+        <div class="user-info">
+          <h1 class="username">{{ user.username }}</h1>
+          <span class="useremail">{{ user.email }}</span>
+          <span class="userdate">С нами с {{ user.created_at | date:'MMMM yyyy' }}</span>
+        </div>
+      </div>
+
+      @if (successMsg) { <div class="msg msg-success">✓ {{ successMsg }}</div> }
+      @if (errorMsg)   { <div class="msg msg-error">⚠ {{ errorMsg }}</div> }
+
+      @if (!editMode) {
+        <div class="info-block">
+          <div class="info-row">
+            <span class="info-key">О себе</span>
+            <span class="info-val">@if (user.bio) {{ user.bio }} @else <em class="empty">Не указано</em></span>
+          </div>
+          <div class="info-row">
+            <span class="info-key">Телефон</span>
+            <span class="info-val">@if (user.phone) {{ user.phone }} @else <em class="empty">Не указан</em></span>
+          </div>
+        </div>
+      }
+
+      @if (editMode) {
+        <form [formGroup]="form" (ngSubmit)="onSave()" class="edit-block">
+          <div class="field">
+            <label class="field-label">О себе</label>
+            <textarea formControlName="bio" class="field-input" rows="3" placeholder="Расскажи о себе..."></textarea>
+          </div>
+          <div class="field">
+            <label class="field-label">Телефон</label>
+            <input formControlName="phone" class="field-input" type="text" placeholder="+7 777 123 45 67">
+          </div>
+          <button type="submit" class="btn-primary" [disabled]="loading">
+            @if (loading) { <span class="spin"></span> Сохраняем... } @else { Сохранить изменения }
+          </button>
+        </form>
+      }
+
+      <div class="logout-row">
+        <button class="btn-logout" (click)="onLogout()">Выйти из аккаунта</button>
+      </div>
+    </div>
+  }
+</div>

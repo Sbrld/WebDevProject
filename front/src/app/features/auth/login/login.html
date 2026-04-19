@@ -1,0 +1,65 @@
+<div class="auth-page">
+  <div class="glow glow-top"></div>
+  <div class="glow glow-bottom"></div>
+
+  <div class="auth-card">
+    <div class="brand">
+      <div class="brand-logo">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <circle cx="11" cy="11" r="8"/>
+          <path d="m21 21-4.35-4.35"/>
+        </svg>
+      </div>
+      <span class="brand-name">FindIt</span>
+    </div>
+
+    <h1 class="auth-heading">Войти</h1>
+    <p class="auth-desc">Добро пожаловать обратно</p>
+
+    @if (errorMsg) {
+      <div class="msg msg-error">
+        {{ errorMsg }}
+      </div>
+    }
+
+    <form [formGroup]="form" (ngSubmit)="onLogin()" novalidate>
+      <div class="field">
+        <label class="field-label">Имя пользователя</label>
+        <input formControlName="username" class="field-input" [class.is-invalid]="username.invalid && username.touched"
+               type="text" placeholder="your_username">
+        @if (username.touched && username.hasError('required')) {
+          <span class="field-error">Обязательное поле</span>
+        }
+      </div>
+
+      <div class="field">
+        <label class="field-label">Пароль</label>
+        <div class="field-wrap">
+          <input formControlName="password" class="field-input" [class.is-invalid]="password.invalid && password.touched"
+                 [type]="showPassword ? 'text' : 'password'" placeholder="••••••••">
+          <button type="button" class="eye-btn" (click)="togglePassword()">
+            {{ showPassword ? '🙈' : '👁' }}
+          </button>
+        </div>
+        @if (password.touched && password.hasError('required')) {
+          <span class="field-error">Обязательное поле</span>
+        }
+        @if (password.touched && password.hasError('minlength')) {
+          <span class="field-error">Минимум 6 символов</span>
+        }
+      </div>
+
+      <button type="submit" class="btn-primary" [disabled]="loading">
+        @if (loading) {
+          <span class="spin"></span> Входим...
+        } @else {
+          Войти
+        }
+      </button>
+    </form>
+
+    <p class="auth-footer-text">
+      Нет аккаунта? <a routerLink="/register" class="link">Зарегистрироваться</a>
+    </p>
+  </div>
+</div>
