@@ -1,1 +1,37 @@
-<p>my-items works!</p>
+<div class="container">
+  <h2>My Items</h2>
+
+  @if (loading) {
+    <div class="loading">Loading...</div>
+  }
+
+  @if (errorMessage) {
+    <div class="error">{{ errorMessage }}</div>
+  }
+
+  @if (!loading && items.length === 0 && !errorMessage) {
+    <div class="empty">
+      <p>You have no items yet.</p>
+      <a routerLink="/create"><button>+ Add Item</button></a>
+    </div>
+  }
+
+  <div class="items-grid">
+    @for (item of items; track item.id) {
+      <div class="item-card">
+        @if (item.image) {
+          <img [src]="item.image" alt="{{ item.title }}" />
+        }
+        <div class="item-info">
+          <h3>{{ item.title }}</h3>
+          <span class="status {{ item.status }}">{{ item.status }}</span>
+          <p>{{ item.category }} | {{ item.location }}</p>
+          <p>{{ item.date }}</p>
+          <a [routerLink]="['/items', item.id]">
+            <button>View / Edit</button>
+          </a>
+        </div>
+      </div>
+    }
+  </div>
+</div>

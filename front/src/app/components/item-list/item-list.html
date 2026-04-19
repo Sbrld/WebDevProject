@@ -1,1 +1,77 @@
-<p>item-list works!</p>
+<div class="container">
+  <div class="page-header">
+    <h2>🔍 Lost & Found Items</h2>
+    <p>Browse items or post your own lost or found item</p>
+  </div>
+
+  <div class="filters">
+    <select [(ngModel)]="filters.category" name="category">
+      <option value="">📦 All Categories</option>
+      <option value="phone">📱 Phone</option>
+      <option value="keys">🔑 Keys</option>
+      <option value="documents">📄 Documents</option>
+      <option value="backpack">🎒 Backpack</option>
+      <option value="clothes">👕 Clothes</option>
+      <option value="other">📌 Other</option>
+    </select>
+
+    <select [(ngModel)]="filters.status" name="status">
+      <option value="">🔖 All Statuses</option>
+      <option value="lost">🔴 Lost</option>
+      <option value="found">🟢 Found</option>
+      <option value="claimed">🟡 Claimed</option>
+      <option value="returned">🔵 Returned</option>
+    </select>
+
+    <input [(ngModel)]="filters.location" name="location" placeholder="📍 Filter by location" />
+
+    <button class="btn-search" (click)="applyFilters()">Search</button>
+    <button class="btn-clear" (click)="clearFilters()">Clear</button>
+  </div>
+
+  @if (errorMessage) {
+    <div class="error">⚠️ {{ errorMessage }}</div>
+  }
+
+  @if (loading) {
+    <div class="loading">⏳ Loading items...</div>
+  }
+
+  @if (!loading && items.length === 0 && !errorMessage) {
+    <div class="empty">
+      <div class="empty-icon">📭</div>
+      <p>No items found. Try different filters!</p>
+    </div>
+  }
+
+  <div class="items-grid">
+    @for (item of items; track item.id) {
+      <div class="item-card">
+        @if (item.image) {
+          <img [src]="item.image" alt="{{ item.title }}" />
+        } @else {
+          <div class="no-image">
+            @if (item.category === 'phone') { 📱 }
+            @else if (item.category === 'keys') { 🔑 }
+            @else if (item.category === 'documents') { 📄 }
+            @else if (item.category === 'backpack') { 🎒 }
+            @else if (item.category === 'clothes') { 👕 }
+            @else { 📦 }
+          </div>
+        }
+        <div class="item-info">
+          <h3>{{ item.title }}</h3>
+          <div class="item-meta">
+            <span class="status {{ item.status }}">{{ item.status }}</span>
+            <span class="category-badge">{{ item.category }}</span>
+          </div>
+          <p>📍 {{ item.location }}</p>
+          <p>📅 {{ item.date }}</p>
+          <a [routerLink]="['/items', item.id]">
+            <button class="btn-view">View Details →</button>
+          </a>
+        </div>
+      </div>
+    }
+  </div>
+</div>

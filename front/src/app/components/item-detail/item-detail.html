@@ -1,1 +1,71 @@
-<p>item-detail works!</p>
+<div class="container">
+  @if (loading) {
+    <div class="loading">Loading...</div>
+  }
+
+  @if (errorMessage) {
+    <div class="error">{{ errorMessage }}</div>
+  }
+
+  @if (item && !loading) {
+    <div class="detail-card">
+      @if (item.image) {
+        <img [src]="item.image" alt="{{ item.title }}" class="item-image" />
+      }
+
+      @if (!isEditing) {
+        <div class="item-info">
+          <h2>{{ item.title }}</h2>
+          <span class="status {{ item.status }}">{{ item.status }}</span>
+          <p><strong>Category:</strong> {{ item.category }}</p>
+          <p><strong>Location:</strong> {{ item.location }}</p>
+          <p><strong>Date:</strong> {{ item.date }}</p>
+          <p><strong>Posted by:</strong> {{ item.owner_username }}</p>
+          <p>{{ item.description }}</p>
+
+          <div class="actions">
+            <!-- (click) 1 -->
+            <button (click)="toggleEdit()" class="btn-edit">Edit</button>
+            <!-- (click) 2 -->
+            <button (click)="deleteItem()" class="btn-delete">Delete</button>
+            <a routerLink="/">← Back to list</a>
+          </div>
+        </div>
+      }
+
+      @if (isEditing) {
+        <div class="edit-form">
+          <h3>Edit Item</h3>
+          <input [(ngModel)]="editData.title" name="title" placeholder="Title" />
+          <textarea [(ngModel)]="editData.description" name="description" rows="3"></textarea>
+
+          <select [(ngModel)]="editData.category" name="category">
+            <option value="phone">Phone</option>
+            <option value="keys">Keys</option>
+            <option value="documents">Documents</option>
+            <option value="backpack">Backpack</option>
+            <option value="clothes">Clothes</option>
+            <option value="other">Other</option>
+          </select>
+
+          <select [(ngModel)]="editData.status" name="status">
+            <option value="lost">Lost</option>
+            <option value="found">Found</option>
+            <option value="claimed">Claimed</option>
+            <option value="returned">Returned</option>
+          </select>
+
+          <input [(ngModel)]="editData.location" name="location" placeholder="Location" />
+          <input [(ngModel)]="editData.date" name="date" type="date" />
+
+          <div class="actions">
+            <!-- (click) 3 -->
+            <button (click)="saveEdit()" class="btn-edit">Save</button>
+            <!-- (click) 4 -->
+            <button (click)="toggleEdit()" class="btn-delete">Cancel</button>
+          </div>
+        </div>
+      }
+    </div>
+  }
+</div>
