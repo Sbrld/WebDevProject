@@ -1,12 +1,12 @@
 <div class="container">
   <div class="form-card">
     <div class="form-header">
-      <h2>📝 Add New Item</h2>
+      <h2>Add New Item</h2>
       <p>Fill in the details about the lost or found item</p>
     </div>
 
     @if (errorMessage) {
-      <div class="error">⚠️ {{ errorMessage }}</div>
+      <div class="error">{{ errorMessage }}</div>
     }
 
     <div class="form-group">
@@ -24,20 +24,19 @@
         <label>Category</label>
         <select [(ngModel)]="formData.category" name="category">
           <option value="">Select...</option>
-          <option value="phone">📱 Phone</option>
-          <option value="keys">🔑 Keys</option>
-          <option value="documents">📄 Documents</option>
-          <option value="backpack">🎒 Backpack</option>
-          <option value="clothes">👕 Clothes</option>
-          <option value="other">📦 Other</option>
+          <option value="phone">Phone</option>
+          <option value="keys">Keys</option>
+          <option value="documents">Documents</option>
+          <option value="backpack">Backpack</option>
+          <option value="clothes">Clothes</option>
+          <option value="other">Other</option>
         </select>
       </div>
-
       <div class="form-group">
         <label>Status</label>
         <select [(ngModel)]="formData.status" name="status">
-          <option value="lost">🔴 Lost</option>
-          <option value="found">🟢 Found</option>
+          <option value="lost">Lost</option>
+          <option value="found">Found</option>
         </select>
       </div>
     </div>
@@ -45,9 +44,8 @@
     <div class="form-row">
       <div class="form-group">
         <label>Location</label>
-        <input [(ngModel)]="formData.location" name="location" placeholder="📍 Where?" />
+        <input [(ngModel)]="formData.location" name="location" placeholder="Where was it lost/found?" />
       </div>
-
       <div class="form-group">
         <label>Date</label>
         <input [(ngModel)]="formData.date" name="date" type="date" />
@@ -57,13 +55,16 @@
     <div class="form-group">
       <label>Image (optional)</label>
       <div class="file-input-wrapper">
+        <lucide-icon [img]="Upload" size="24" class="upload-icon"></lucide-icon>
+        <p>Click to upload image</p>
         <input type="file" accept="image/*" (change)="onImageChange($event)" />
         <p class="file-hint">PNG, JPG up to 10MB</p>
       </div>
     </div>
 
     <button class="btn-submit" (click)="onSubmit()" [disabled]="loading">
-      @if (loading) { ⏳ Saving... } @else { 🚀 Add Item }
+      <lucide-icon [img]="Plus" size="16"></lucide-icon>
+      @if (loading) { Saving... } @else { Add Item }
     </button>
   </div>
 </div>

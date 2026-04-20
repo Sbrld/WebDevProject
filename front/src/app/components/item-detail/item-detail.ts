@@ -1,30 +1,40 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { LucideAngularModule, MapPin, Calendar, User, Tag, ArrowLeft, Edit, Trash2, Save, X, Phone, Key, FileText, Backpack, Shirt, Package } from 'lucide-angular';
 import { ItemService } from '../../services/item';
 import { Item } from '../../models/item';
 
 @Component({
   selector: 'app-item-detail',
   standalone: true,
-  imports: [RouterLink, FormsModule],
+  imports: [RouterLink, FormsModule, LucideAngularModule],
   templateUrl: './item-detail.html',
   styleUrl: './item-detail.css'
 })
 export class ItemDetail implements OnInit {
+  readonly MapPin = MapPin;
+  readonly Calendar = Calendar;
+  readonly User = User;
+  readonly Tag = Tag;
+  readonly ArrowLeft = ArrowLeft;
+  readonly Edit = Edit;
+  readonly Trash2 = Trash2;
+  readonly Save = Save;
+  readonly X = X;
+  readonly Phone = Phone;
+  readonly Key = Key;
+  readonly FileText = FileText;
+  readonly Backpack = Backpack;
+  readonly Shirt = Shirt;
+  readonly Package = Package;
+
   item: Item | null = null;
   errorMessage = '';
   loading = false;
   isEditing = false;
 
-  editData = {
-    title: '',
-    description: '',
-    category: '',
-    status: '',
-    location: '',
-    date: ''
-  };
+  editData = { title: '', description: '', category: '', status: '', location: '', date: '' };
 
   constructor(
     private route: ActivatedRoute,
@@ -42,14 +52,7 @@ export class ItemDetail implements OnInit {
     this.itemService.getItem(id).subscribe({
       next: (data) => {
         this.item = data;
-        this.editData = {
-          title: data.title,
-          description: data.description,
-          category: data.category,
-          status: data.status,
-          location: data.location,
-          date: data.date
-        };
+        this.editData = { title: data.title, description: data.description, category: data.category, status: data.status, location: data.location, date: data.date };
         this.loading = false;
       },
       error: () => {
@@ -59,41 +62,23 @@ export class ItemDetail implements OnInit {
     });
   }
 
-  toggleEdit() {
-    this.isEditing = !this.isEditing;
-  }
+  toggleEdit() { this.isEditing = !this.isEditing; }
 
   saveEdit() {
     if (!this.item?.id) return;
     const data = new FormData();
-    data.append('title', this.editData.title);
-    data.append('description', this.editData.description);
-    data.append('category', this.editData.category);
-    data.append('status', this.editData.status);
-    data.append('location', this.editData.location);
-    data.append('date', this.editData.date);
-
+    Object.entries(this.editData).forEach(([k, v]) => data.append(k, v));
     this.itemService.updateItem(this.item.id, data).subscribe({
-      next: (updated) => {
-        this.item = updated;
-        this.isEditing = false;
-      },
-      error: () => {
-        this.errorMessage = 'Failed to update item.';
-      }
+      next: (updated) => { this.item = updated; this.isEditing = false; },
+      error: () => { this.errorMessage = 'Failed to update item.'; }
     });
   }
 
   deleteItem() {
-    if (!this.item?.id) return;
-    if (!confirm('Are you sure you want to delete this item?')) return;
+    if (!this.item?.id || !confirm('Are you sure?')) return;
     this.itemService.deleteItem(this.item.id).subscribe({
-      next: () => {
-        this.router.navigate(['/']);
-      },
-      error: () => {
-        this.errorMessage = 'Failed to delete item.';
-      }
+      next: () => this.router.navigate(['/']),
+      error: () => { this.errorMessage = 'Failed to delete item.'; }
     });
   }
 }

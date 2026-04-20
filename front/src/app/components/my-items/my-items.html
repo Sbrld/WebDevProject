@@ -1,18 +1,19 @@
 <div class="container">
-  <h2>My Items</h2>
+  <div class="page-header">
+    <h2>My Items</h2>
+    <p>Manage your lost and found listings</p>
+  </div>
 
-  @if (loading) {
-    <div class="loading">Loading...</div>
-  }
-
-  @if (errorMessage) {
-    <div class="error">{{ errorMessage }}</div>
-  }
+  @if (loading) { <div class="loading">Loading your items...</div> }
+  @if (errorMessage) { <div class="error">{{ errorMessage }}</div> }
 
   @if (!loading && items.length === 0 && !errorMessage) {
     <div class="empty">
-      <p>You have no items yet.</p>
-      <a routerLink="/create"><button>+ Add Item</button></a>
+      <lucide-icon [img]="Package" size="56" class="empty-icon"></lucide-icon>
+      <p>You haven't posted any items yet.</p>
+      <a routerLink="/create" class="btn-add">
+        <lucide-icon [img]="Plus" size="16"></lucide-icon> Post an Item
+      </a>
     </div>
   }
 
@@ -21,14 +22,26 @@
       <div class="item-card">
         @if (item.image) {
           <img [src]="item.image" alt="{{ item.title }}" />
+        } @else {
+          <div class="no-image">
+            @if (item.category === 'phone') { <lucide-icon [img]="Phone" size="48"></lucide-icon> }
+            @else if (item.category === 'keys') { <lucide-icon [img]="Key" size="48"></lucide-icon> }
+            @else if (item.category === 'documents') { <lucide-icon [img]="FileText" size="48"></lucide-icon> }
+            @else if (item.category === 'backpack') { <lucide-icon [img]="Backpack" size="48"></lucide-icon> }
+            @else if (item.category === 'clothes') { <lucide-icon [img]="Shirt" size="48"></lucide-icon> }
+            @else { <lucide-icon [img]="Package" size="48"></lucide-icon> }
+          </div>
         }
         <div class="item-info">
           <h3>{{ item.title }}</h3>
-          <span class="status {{ item.status }}">{{ item.status }}</span>
-          <p>{{ item.category }} | {{ item.location }}</p>
-          <p>{{ item.date }}</p>
+          <div class="item-meta">
+            <span class="status {{ item.status }}">{{ item.status }}</span>
+            <span class="category-badge">{{ item.category }}</span>
+          </div>
+          <p><lucide-icon [img]="MapPin" size="13"></lucide-icon> {{ item.location }}</p>
+          <p><lucide-icon [img]="Calendar" size="13"></lucide-icon> {{ item.date }}</p>
           <a [routerLink]="['/items', item.id]">
-            <button>View / Edit</button>
+            <button class="btn-view">View / Edit</button>
           </a>
         </div>
       </div>

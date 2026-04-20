@@ -20,7 +20,7 @@ class ItemListCreateView(generics.ListCreateAPIView):
         return Item.objects.filter(is_active=True)
 
     def perform_create(self, serializer):
-        serializer.save(owner=self.request.user)
+        serializer.save(owner=self.request.user, is_active=True)
 
 class ItemDetailView(APIView):
     permission_classes = [IsAuthenticatedOrReadOnly]
@@ -57,7 +57,6 @@ def my_items(request):
     items = Item.objects.filter(owner=request.user, is_active=True)
     serializer = ItemSerializer(items, many=True)
     return Response(serializer.data)
-
 
 @api_view(['PATCH'])
 @permission_classes([IsAuthenticated])

@@ -1,34 +1,61 @@
 <div class="container">
-  @if (loading) {
-    <div class="loading">Loading...</div>
-  }
-
-  @if (errorMessage) {
-    <div class="error">{{ errorMessage }}</div>
-  }
+  @if (loading) { <div class="loading">Loading...</div> }
+  @if (errorMessage) { <div class="error">{{ errorMessage }}</div> }
 
   @if (item && !loading) {
     <div class="detail-card">
       @if (item.image) {
         <img [src]="item.image" alt="{{ item.title }}" class="item-image" />
+      } @else {
+        <div class="no-image">
+          @if (item.category === 'phone') { <lucide-icon [img]="Phone" size="64"></lucide-icon> }
+          @else if (item.category === 'keys') { <lucide-icon [img]="Key" size="64"></lucide-icon> }
+          @else if (item.category === 'documents') { <lucide-icon [img]="FileText" size="64"></lucide-icon> }
+          @else if (item.category === 'backpack') { <lucide-icon [img]="Backpack" size="64"></lucide-icon> }
+          @else if (item.category === 'clothes') { <lucide-icon [img]="Shirt" size="64"></lucide-icon> }
+          @else { <lucide-icon [img]="Package" size="64"></lucide-icon> }
+        </div>
       }
 
       @if (!isEditing) {
         <div class="item-info">
           <h2>{{ item.title }}</h2>
-          <span class="status {{ item.status }}">{{ item.status }}</span>
-          <p><strong>Category:</strong> {{ item.category }}</p>
-          <p><strong>Location:</strong> {{ item.location }}</p>
-          <p><strong>Date:</strong> {{ item.date }}</p>
-          <p><strong>Posted by:</strong> {{ item.owner_username }}</p>
-          <p>{{ item.description }}</p>
+          <div class="item-meta">
+            <span class="status {{ item.status }}">{{ item.status }}</span>
+            <span class="category-badge">{{ item.category }}</span>
+          </div>
+
+          <div class="info-grid">
+            <div class="info-item">
+              <div class="label"><lucide-icon [img]="MapPin" size="12"></lucide-icon> Location</div>
+              <div class="value">{{ item.location }}</div>
+            </div>
+            <div class="info-item">
+              <div class="label"><lucide-icon [img]="Calendar" size="12"></lucide-icon> Date</div>
+              <div class="value">{{ item.date }}</div>
+            </div>
+            <div class="info-item">
+              <div class="label"><lucide-icon [img]="User" size="12"></lucide-icon> Posted by</div>
+              <div class="value">{{ item.owner_username }}</div>
+            </div>
+            <div class="info-item">
+              <div class="label"><lucide-icon [img]="Tag" size="12"></lucide-icon> Category</div>
+              <div class="value">{{ item.category }}</div>
+            </div>
+          </div>
+
+          <div class="description-box">{{ item.description }}</div>
 
           <div class="actions">
-            <!-- (click) 1 -->
-            <button (click)="toggleEdit()" class="btn-edit">Edit</button>
-            <!-- (click) 2 -->
-            <button (click)="deleteItem()" class="btn-delete">Delete</button>
-            <a routerLink="/">← Back to list</a>
+            <button class="btn-edit" (click)="toggleEdit()">
+              <lucide-icon [img]="Edit" size="15"></lucide-icon> Edit
+            </button>
+            <button class="btn-delete" (click)="deleteItem()">
+              <lucide-icon [img]="Trash2" size="15"></lucide-icon> Delete
+            </button>
+            <a class="btn-back" routerLink="/">
+              <lucide-icon [img]="ArrowLeft" size="15"></lucide-icon> Back
+            </a>
           </div>
         </div>
       }
@@ -36,33 +63,53 @@
       @if (isEditing) {
         <div class="edit-form">
           <h3>Edit Item</h3>
-          <input [(ngModel)]="editData.title" name="title" placeholder="Title" />
-          <textarea [(ngModel)]="editData.description" name="description" rows="3"></textarea>
-
-          <select [(ngModel)]="editData.category" name="category">
-            <option value="phone">Phone</option>
-            <option value="keys">Keys</option>
-            <option value="documents">Documents</option>
-            <option value="backpack">Backpack</option>
-            <option value="clothes">Clothes</option>
-            <option value="other">Other</option>
-          </select>
-
-          <select [(ngModel)]="editData.status" name="status">
-            <option value="lost">Lost</option>
-            <option value="found">Found</option>
-            <option value="claimed">Claimed</option>
-            <option value="returned">Returned</option>
-          </select>
-
-          <input [(ngModel)]="editData.location" name="location" placeholder="Location" />
-          <input [(ngModel)]="editData.date" name="date" type="date" />
-
+          <div class="form-group">
+            <label>Title</label>
+            <input [(ngModel)]="editData.title" name="title" />
+          </div>
+          <div class="form-group">
+            <label>Description</label>
+            <textarea [(ngModel)]="editData.description" name="description" rows="4"></textarea>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Category</label>
+              <select [(ngModel)]="editData.category" name="category">
+                <option value="phone">Phone</option>
+                <option value="keys">Keys</option>
+                <option value="documents">Documents</option>
+                <option value="backpack">Backpack</option>
+                <option value="clothes">Clothes</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Status</label>
+              <select [(ngModel)]="editData.status" name="status">
+                <option value="lost">Lost</option>
+                <option value="found">Found</option>
+                <option value="claimed">Claimed</option>
+                <option value="returned">Returned</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Location</label>
+              <input [(ngModel)]="editData.location" name="location" />
+            </div>
+            <div class="form-group">
+              <label>Date</label>
+              <input [(ngModel)]="editData.date" name="date" type="date" />
+            </div>
+          </div>
           <div class="actions">
-            <!-- (click) 3 -->
-            <button (click)="saveEdit()" class="btn-edit">Save</button>
-            <!-- (click) 4 -->
-            <button (click)="toggleEdit()" class="btn-delete">Cancel</button>
+            <button class="btn-edit" (click)="saveEdit()">
+              <lucide-icon [img]="Save" size="15"></lucide-icon> Save
+            </button>
+            <button class="btn-delete" (click)="toggleEdit()">
+              <lucide-icon [img]="X" size="15"></lucide-icon> Cancel
+            </button>
           </div>
         </div>
       }
