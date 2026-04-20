@@ -1,11 +1,15 @@
+<!-- Страница входа FindIt -->
 <div class="auth-page">
   <div class="glow glow-top"></div>
   <div class="glow glow-bottom"></div>
 
   <div class="auth-card">
+
+    <!-- Лого -->
     <div class="brand">
       <div class="brand-logo">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
           <circle cx="11" cy="11" r="8"/>
           <path d="m21 21-4.35-4.35"/>
         </svg>
@@ -16,29 +20,69 @@
     <h1 class="auth-heading">Войти</h1>
     <p class="auth-desc">Добро пожаловать обратно</p>
 
+    <!-- Ошибка от сервера -->
     @if (errorMsg) {
-      <div class="msg msg-error">
+      <div class="msg msg-error" role="alert">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2" style="flex-shrink:0;margin-top:1px">
+          <circle cx="12" cy="12" r="10"/>
+          <line x1="12" y1="8" x2="12" y2="12"/>
+          <line x1="12" y1="16" x2="12.01" y2="16"/>
+        </svg>
         {{ errorMsg }}
       </div>
     }
 
+    <!-- Форма — [formGroup] вместо ngModel -->
     <form [formGroup]="form" (ngSubmit)="onLogin()" novalidate>
+
+      <!-- Имя пользователя -->
       <div class="field">
-        <label class="field-label">Имя пользователя</label>
-        <input formControlName="username" class="field-input" [class.is-invalid]="username.invalid && username.touched"
-               type="text" placeholder="your_username">
+        <label class="field-label" for="username">Имя пользователя</label>
+        <input
+          id="username"
+          formControlName="username"
+          class="field-input"
+          [class.is-invalid]="username.invalid && username.touched"
+          type="text"
+          placeholder="your_username"
+          autocomplete="username"
+        />
         @if (username.touched && username.hasError('required')) {
           <span class="field-error">Обязательное поле</span>
         }
       </div>
 
+      <!-- Пароль -->
       <div class="field">
-        <label class="field-label">Пароль</label>
+        <label class="field-label" for="password">Пароль</label>
         <div class="field-wrap">
-          <input formControlName="password" class="field-input" [class.is-invalid]="password.invalid && password.touched"
-                 [type]="showPassword ? 'text' : 'password'" placeholder="••••••••">
+          <input
+            id="password"
+            formControlName="password"
+            class="field-input"
+            [class.is-invalid]="password.invalid && password.touched"
+            [type]="showPassword ? 'text' : 'password'"
+            placeholder="••••••••"
+            autocomplete="current-password"
+          />
           <button type="button" class="eye-btn" (click)="togglePassword()">
-            {{ showPassword ? '🙈' : '👁' }}
+            @if (showPassword) {
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none"
+                   stroke="currentColor" stroke-width="2">
+                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8
+                         a18.45 18.45 0 0 1 5.06-5.94"/>
+                <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8
+                         a18.5 18.5 0 0 1-2.16 3.19"/>
+                <line x1="1" y1="1" x2="23" y2="23"/>
+              </svg>
+            } @else {
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none"
+                   stroke="currentColor" stroke-width="2">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+            }
           </button>
         </div>
         @if (password.touched && password.hasError('required')) {
@@ -49,6 +93,7 @@
         }
       </div>
 
+      <!-- Кнопка отправки -->
       <button type="submit" class="btn-primary" [disabled]="loading">
         @if (loading) {
           <span class="spin"></span> Входим...
@@ -56,10 +101,12 @@
           Войти
         }
       </button>
+
     </form>
 
     <p class="auth-footer-text">
       Нет аккаунта? <a routerLink="/register" class="link">Зарегистрироваться</a>
     </p>
+
   </div>
 </div>

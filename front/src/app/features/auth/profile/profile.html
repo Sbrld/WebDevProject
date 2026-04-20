@@ -1,27 +1,50 @@
+<!-- Страница профиля пользователя FindIt -->
 <div class="profile-page">
   <div class="glow glow-top"></div>
 
+  <!-- Состояние ошибки загрузки -->
   @if (loadError) {
     <div class="state-card">
       <div class="state-icon err">✕</div>
       <p class="state-title">Не удалось загрузить профиль</p>
-      <p class="state-sub">Возможно сессия истекла</p>
+      <p class="state-sub">Возможно, сессия истекла.</p>
       <a routerLink="/login" class="btn-ghost">Войти заново</a>
     </div>
+
+    <!-- Состояние загрузки -->
   } @else if (!user) {
     <div class="state-card">
       <div class="loader-ring"></div>
-      <p class="state-sub">Загружаем профиль...</p>
+      <p class="state-sub">Загружаем профиль…</p>
     </div>
+
+    <!-- Основной контент -->
   } @else {
     <div class="profile-card">
+
+      <!-- Верхняя строка: ссылка назад + кнопка редактирования -->
       <div class="p-header">
-        <a routerLink="/" class="back-btn">← Главная</a>
+        <a routerLink="/" class="back-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2.5">
+            <path d="M19 12H5M12 5l-7 7 7 7"/>
+          </svg>
+          Главная
+        </a>
         <button class="edit-toggle" (click)="toggleEdit()">
-          @if (editMode) { Отмена } @else { Редактировать }
+          @if (editMode) { Отмена }
+          @else {
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2">
+              <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+              <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+            </svg>
+            Редактировать
+          }
         </button>
       </div>
 
+      <!-- Аватар + имя + email -->
       <div class="avatar-row">
         <div class="avatar">{{ getInitial() }}</div>
         <div class="user-info">
@@ -31,41 +54,88 @@
         </div>
       </div>
 
-      @if (successMsg) { <div class="msg msg-success">✓ {{ successMsg }}</div> }
-      @if (errorMsg)   { <div class="msg msg-error">⚠ {{ errorMsg }}</div> }
+      <!-- Уведомления -->
+      @if (successMsg) {
+        <div class="msg msg-success" role="status">✓ {{ successMsg }}</div>
+      }
+      @if (errorMsg) {
+        <div class="msg msg-error" role="alert">⚠ {{ errorMsg }}</div>
+      }
 
+      <!-- Режим просмотра -->
       @if (!editMode) {
         <div class="info-block">
           <div class="info-row">
             <span class="info-key">О себе</span>
-            <span class="info-val">@if (user.bio) {{ user.bio }} @else <em class="empty">Не указано</em></span>
+            <span class="info-val">
+              @if (user.bio) { {{ user.bio }} }
+              @else { <em class="empty">Не указано</em> }
+            </span>
           </div>
           <div class="info-row">
             <span class="info-key">Телефон</span>
-            <span class="info-val">@if (user.phone) {{ user.phone }} @else <em class="empty">Не указан</em></span>
+            <span class="info-val">
+              @if (user.phone) { {{ user.phone }} }
+              @else { <em class="empty">Не указан</em> }
+            </span>
           </div>
         </div>
       }
 
+      <!-- Режим редактирования — Reactive Form -->
       @if (editMode) {
-        <form [formGroup]="form" (ngSubmit)="onSave()" class="edit-block">
+        <form [formGroup]="form" (ngSubmit)="onSave()" class="edit-block" novalidate>
+
           <div class="field">
-            <label class="field-label">О себе</label>
-            <textarea formControlName="bio" class="field-input" rows="3" placeholder="Расскажи о себе..."></textarea>
+            <label class="field-label" for="bio">О себе</label>
+            <textarea
+              id="bio"
+              formControlName="bio"
+              class="field-input"
+              rows="3"
+              placeholder="Расскажи о себе…"
+            ></textarea>
           </div>
+
           <div class="field">
-            <label class="field-label">Телефон</label>
-            <input formControlName="phone" class="field-input" type="text" placeholder="+7 777 123 45 67">
+            <label class="field-label" for="phone">Телефон</label>
+            <input
+              id="phone"
+              formControlName="phone"
+              class="field-input"
+              [class.is-invalid]="phone.invalid && phone.touched"
+              type="text"
+              placeholder="+7 777 000 0000"
+            />
+            @if (phone.touched && phone.hasError('pattern')) {
+              <span class="field-error">Введите корректный номер телефона</span>
+            }
           </div>
+
           <button type="submit" class="btn-primary" [disabled]="loading">
-            @if (loading) { <span class="spin"></span> Сохраняем... } @else { Сохранить изменения }
+            @if (loading) {
+              <span class="spin"></span> Сохраняем…
+            } @else {
+              Сохранить изменения
+            }
           </button>
+
         </form>
       }
 
+      <!-- Кнопка выхода -->
       <div class="logout-row">
-        <button class="btn-logout" (click)="onLogout()">Выйти из аккаунта</button>
+        <button class="btn-logout" type="button" (click)="onLogout()">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+            <polyline points="16 17 21 12 16 7"/>
+            <line x1="21" y1="12" x2="9" y2="12"/>
+          </svg>
+          Выйти
+        </button>
       </div>
+
     </div>
   }
 </div>
