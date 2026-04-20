@@ -32,20 +32,26 @@ export class LoginComponent {
 
   // ─── Отправка формы ──────────────────────────────────────────────────────
   onLogin(): void {
-    // Помечаем все поля как "тронутые" чтобы показать ошибки валидации
     this.form.markAllAsTouched();
     if (this.form.invalid) return;
 
     this.loading = true;
     this.errorMsg = '';
 
-    this.auth.login(this.form.value as { username: string; password: string }).subscribe({
-      next: () => this.router.navigate(['/']),
-      error: (err) => {
-        this.errorMsg = parseBackendErrors(err);
-        this.loading = false;
-      },
-    });
+    this.auth
+      .login({
+        username: this.username.value ?? '',
+        password: this.password.value ?? '',
+      })
+      .subscribe({
+        // FIX: было navigate(['/']) → бесконечный редирект т.к. маршрут 'home' не создан
+        // Редиректим на /profile до тех пор, пока команда не добавит /home
+        next: () => this.router.navigate(['/profile']),
+        error: (err) => {
+          this.errorMsg = parseBackendErrors(err);
+          this.loading = false;
+        },
+      });
   }
 
   togglePassword(): void {

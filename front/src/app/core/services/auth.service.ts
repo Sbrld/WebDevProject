@@ -10,7 +10,7 @@ import {
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private readonly API = 'http://localhost:8000/api';
+  private readonly API = 'http://127.0.0.1:8000/api';
 
   // ─── Реактивное состояние через Signals────────────────────
   private _currentUser = signal<User | null>(this._loadUser());

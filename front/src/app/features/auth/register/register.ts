@@ -70,7 +70,6 @@ export class RegisterComponent {
     this.loading = true;
     this.errorMsg = '';
 
-    // form.controls — типизированный доступ, не нужен ненужный ! оператор
     this.auth
       .register({
         username:  this.username.value  ?? '',
@@ -79,7 +78,8 @@ export class RegisterComponent {
         password2: this.password2.value ?? '',
       })
       .subscribe({
-        next: () => this.router.navigate(['/']),
+        // FIX: было navigate(['/']) → бесконечный редирект т.к. маршрут 'home' не создан
+        next: () => this.router.navigate(['/profile']),
         error: (err) => {
           this.errorMsg = parseBackendErrors(err);
           this.loading = false;
