@@ -1,0 +1,170 @@
+{
+  "info": {
+    "name": "FindIt API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Get Token",
+          "request": {
+            "method": "POST",
+            "url": "http://127.0.0.1:8000/api/token/",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"username\": \"your_username\", \"password\": \"your_password\"}"
+            }
+          },
+          "response": [
+            {
+              "name": "Success",
+              "status": "OK",
+              "code": 200,
+              "body": "{\"access\": \"eyJ...\", \"refresh\": \"eyJ...\"}"
+            }
+          ]
+        },
+        {
+          "name": "Refresh Token",
+          "request": {
+            "method": "POST",
+            "url": "http://127.0.0.1:8000/api/token/refresh/",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"refresh\": \"your_refresh_token\"}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Items",
+      "item": [
+        {
+          "name": "Get All Items",
+          "request": {
+            "method": "GET",
+            "url": "http://127.0.0.1:8000/api/items/"
+          },
+          "response": [
+            {
+              "name": "Success",
+              "status": "OK",
+              "code": 200,
+              "body": "[]"
+            }
+          ]
+        },
+        {
+          "name": "Get All Items with Filters",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/items/?category=phone&status=lost",
+              "query": [
+                {"key": "category", "value": "phone"},
+                {"key": "status", "value": "lost"}
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Item",
+          "request": {
+            "method": "POST",
+            "url": "http://127.0.0.1:8000/api/items/",
+            "header": [{"key": "Authorization", "value": "Bearer {{access_token}}"}],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {"key": "title", "value": "Lost iPhone"},
+                {"key": "description", "value": "Black iPhone 14 Pro"},
+                {"key": "category", "value": "phone"},
+                {"key": "status", "value": "lost"},
+                {"key": "location", "value": "Almaty"},
+                {"key": "date", "value": "2026-04-20"}
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Success",
+              "status": "Created",
+              "code": 201,
+              "body": "{\"id\": 1, \"title\": \"Lost iPhone\", \"status\": \"lost\"}"
+            }
+          ]
+        },
+        {
+          "name": "Get Item Detail",
+          "request": {
+            "method": "GET",
+            "url": "http://127.0.0.1:8000/api/items/1/"
+          }
+        },
+        {
+          "name": "Update Item",
+          "request": {
+            "method": "PUT",
+            "url": "http://127.0.0.1:8000/api/items/1/",
+            "header": [{"key": "Authorization", "value": "Bearer {{access_token}}"}],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {"key": "title", "value": "Updated Title"},
+                {"key": "description", "value": "Updated description"},
+                {"key": "category", "value": "phone"},
+                {"key": "status", "value": "found"},
+                {"key": "location", "value": "Almaty"},
+                {"key": "date", "value": "2026-04-20"}
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete Item",
+          "request": {
+            "method": "DELETE",
+            "url": "http://127.0.0.1:8000/api/items/1/",
+            "header": [{"key": "Authorization", "value": "Bearer {{access_token}}"}]
+          },
+          "response": [
+            {
+              "name": "Success",
+              "status": "No Content",
+              "code": 204,
+              "body": ""
+            }
+          ]
+        },
+        {
+          "name": "My Items",
+          "request": {
+            "method": "GET",
+            "url": "http://127.0.0.1:8000/api/items/my/",
+            "header": [{"key": "Authorization", "value": "Bearer {{access_token}}"}]
+          }
+        },
+        {
+          "name": "Update Item Status",
+          "request": {
+            "method": "PATCH",
+            "url": "http://127.0.0.1:8000/api/items/1/status/",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{access_token}}"},
+              {"key": "Content-Type", "value": "application/json"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"status\": \"found\"}"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
