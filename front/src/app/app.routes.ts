@@ -1,14 +1,15 @@
 import { Routes } from '@angular/router';
+import { ItemList } from './components/item-list/item-list';
+import { ItemDetail } from './components/item-detail/item-detail';
+import { ItemCreate } from './components/item-create/item-create';
+import { MyItems } from './components/my-items/my-items';
 import { authGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
-  {
-    // ✅ FIX: было redirectTo: 'home' — маршрут не существует → бесконечный цикл
-    // Временно редиректим на /profile пока команда не добавит /home
-    path: '',
-    redirectTo: 'profile',
-    pathMatch: 'full'
-  },
+  { path: '', component: ItemList },
+  { path: 'items/:id', component: ItemDetail },
+  { path: 'create', component: ItemCreate, canActivate: [authGuard] },
+  { path: 'my-items', component: MyItems, canActivate: [authGuard] },
   {
     path: 'login',
     loadComponent: () =>
@@ -17,7 +18,7 @@ export const routes: Routes = [
   {
     path: 'register',
     loadComponent: () =>
-      import('./features/auth/register/register').then(m => m.RegisterComponent)
+      import('./features/auth/register/register').then(m => m.LoginComponent)
   },
   {
     path: 'profile',
@@ -25,16 +26,5 @@ export const routes: Routes = [
       import('./features/auth/profile/profile').then(m => m.ProfileComponent),
     canActivate: [authGuard]
   },
-
-  // ── Команда раскомментирует когда добавит свои компоненты ─────────────────
-  // { path: 'home', loadComponent: () => import('./features/items/home/home.component').then(m => m.HomeComponent) },
-  // { path: 'items/:id', loadComponent: () => import('./features/items/detail/item-detail.component').then(m => m.ItemDetailComponent) },
-  // { path: 'claims', loadComponent: () => import('./features/claims/claims.component').then(m => m.ClaimsComponent), canActivate: [authGuard] },
-  // ──────────────────────────────────────────────────────────────────────────
-
-  {
-    // ✅ Когда маршрут не найден — неавторизованные идут на /login
-    path: '**',
-    redirectTo: 'login'
-  }
+  { path: '**', redirectTo: 'login' }
 ];
