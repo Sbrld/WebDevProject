@@ -1,0 +1,88 @@
+.app-container {
+  display: flex;
+  min-height: 100vh;
+  background: #08090a;
+  color: #e8eaf0;
+}
+
+.sidebar {
+  width: 260px;
+  background: #0f1117;
+  border-right: 1px solid #1e2330;
+  padding: 2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+.logo {
+  margin-bottom: 3rem;
+}
+
+.brand-name {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #14b8a6;
+  letter-spacing: -0.5px;
+}
+
+.nav-menu {
+  margin-bottom: 2.5rem;
+}
+
+.nav-item {
+  display: block;
+  padding: 0.85rem 1rem;
+  color: #9ca3af;
+  text-decoration: none;
+  border-radius: 0.6rem;
+  margin-bottom: 0.4rem;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.nav-item:hover {
+  background: #1e2330;
+  color: #e8eaf0;
+}
+
+.nav-item.active {
+  background: #14b8a6;
+  color: #08090a;
+  font-weight: 600;
+}
+
+.nav-bottom {
+  margin-top: auto;
+  padding-top: 2rem;
+  border-top: 1px solid #1e2330;
+}
+
+.profile-item {
+  margin-bottom: 0.8rem;
+}
+
+.logout-btn {
+  width: 100%;
+  background: transparent;
+  color: #f87171;
+  border: 1px solid #f87171;
+  padding: 0.85rem;
+  border-radius: 0.6rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.logout-btn:hover {
+  background: #f87171;
+  color: white;
+}
+
+.main-content {
+  margin-left: 260px;
+  flex: 1;
+  padding: 2rem;
+}

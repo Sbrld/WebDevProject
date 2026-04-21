@@ -1,0 +1,49 @@
+<div class="app-container">
+  <!-- Левый навбар -->
+  <nav class="sidebar">
+    <div class="logo">
+      <span class="brand-name">FindIt</span>
+    </div>
+
+    <div class="nav-menu">
+      <a routerLink="/home" routerLinkActive="active" class="nav-item">
+        Главная
+      </a>
+      <a routerLink="/items" routerLinkActive="active" class="nav-item">
+        Все вещи
+      </a>
+      <a routerLink="/found" routerLinkActive="active" class="nav-item">
+        Найденные вещи
+      </a>
+      <a routerLink="/lost" routerLinkActive="active" class="nav-item">
+        Потерянные вещи
+      </a>
+      <a routerLink="/my-items" routerLinkActive="active" class="nav-item">
+        Мои вещи
+      </a>
+    </div>
+
+    <div class="nav-menu">
+      <a routerLink="/claims" routerLinkActive="active" class="nav-item">
+        Заявки
+      </a>
+      <a routerLink="/messages" routerLinkActive="active" class="nav-item">
+        Сообщения
+      </a>
+    </div>
+
+    <div class="nav-bottom">
+      <a routerLink="/profile" routerLinkActive="active" class="nav-item profile-item">
+        Профиль
+      </a>
+      <button (click)="logout()" class="nav-item logout-btn">
+        Выйти
+      </button>
+    </div>
+  </nav>
+
+  <!-- Основное содержание -->
+  <main class="main-content">
+    <router-outlet></router-outlet>
+  </main>
+</div>

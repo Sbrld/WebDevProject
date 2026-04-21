@@ -1,0 +1,38 @@
+<div class="home-page">
+  <div class="welcome-section">
+    <h1 class="main-title">Добро пожаловать в {{ title }}</h1>
+    <p class="subtitle">{{ subtitle }}</p>
+
+    <div class="actions">
+      <a routerLink="/create-item" class="btn-primary">
+        Опубликовать вещь
+      </a>
+      <a routerLink="/items" class="btn-secondary">
+        Посмотреть все вещи
+      </a>
+    </div>
+  </div>
+
+  <div class="quick-stats">
+    <div class="stat-card">
+      <h3>Найденные вещи</h3>
+      <p class="stat-number">124</p>
+      <p class="stat-label">за последний месяц</p>
+    </div>
+    <div class="stat-card">
+      <h3>Потерянные вещи</h3>
+      <p class="stat-number">87</p>
+      <p class="stat-label">ожидают хозяина</p>
+    </div>
+    <div class="stat-card">
+      <h3>Успешных возвратов</h3>
+      <p class="stat-number">203</p>
+      <p class="stat-label">людей получили свои вещи</p>
+    </div>
+  </div>
+
+  <div class="recent-section">
+    <h2>Недавние объявления</h2>
+    <p class="placeholder-text">Здесь будет список недавних вещей (пока пусто)</p>
+  </div>
+</div>
