@@ -1,0 +1,265 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
+/* ─── CSS Variables (дублируем для независимости от _auth-shared.css) ───── */
+:root {
+  --c-bg:            #08090a;
+  --c-surface:       #0f1117;
+  --c-border:        #1e2330;
+  --c-border-focus:  #14b8a6;
+  --c-input-bg:      #08090a;
+  --c-text-primary:  #e8eaf0;
+  --c-text-secondary:#4a5168;
+  --c-text-muted:    #2e3548;
+  --c-placeholder:   #252a38;
+  --c-accent-1:      #14b8a6;
+  --c-accent-2:      #06b6d4;
+  --c-error:         #f87171;
+  --c-error-bg:      rgba(239,68,68,0.07);
+  --c-error-bdr:     rgba(239,68,68,0.22);
+  --c-success:       #2dd4bf;
+  --c-success-bg:    rgba(20,184,166,0.07);
+  --c-success-bdr:   rgba(20,184,166,0.22);
+  --c-ok:            #2dd4bf;
+  --grad-btn:        linear-gradient(135deg, #14b8a6 0%, #06b6d4 100%);
+  --r-card:          1.25rem;
+  --r-input:         0.6rem;
+  --shadow-card:     0 32px 64px rgba(0,0,0,0.6);
+  --t-fast:          0.18s;
+}
+
+*,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
+:host { display: block; }
+
+/* ─── Layout ─────────────────────────────────────────────────── */
+.profile-page {
+  min-height: 100vh;
+  background: var(--c-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1.5rem;
+  position: relative;
+  overflow: hidden;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+.glow {
+  position: absolute;
+  pointer-events: none;
+  border-radius: 50%;
+  filter: blur(100px);
+}
+.glow-top {
+  width: 500px; height: 350px;
+  background: radial-gradient(ellipse, rgba(20,184,166,.15), transparent 70%);
+  top: -120px; left: 50%;
+  transform: translateX(-50%);
+}
+
+/* ─── Состояния загрузки / ошибки ────────────────────────────── */
+.state-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.85rem;
+  color: var(--c-text-secondary);
+  text-align: center;
+}
+.state-icon {
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.4rem; font-weight: 700;
+}
+.state-icon.err { background: var(--c-error-bg); color: var(--c-error); }
+.state-title { color: var(--c-text-primary); font-weight: 700; font-size: 1.1rem; }
+.state-sub { font-size: 0.875rem; }
+
+.loader-ring {
+  width: 40px; height: 40px;
+  border: 3px solid var(--c-border);
+  border-top-color: var(--c-accent-1);
+  border-radius: 50%;
+  animation: spin .8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.btn-ghost {
+  border: 1px solid var(--c-border);
+  color: var(--c-text-secondary);
+  background: transparent;
+  border-radius: 0.55rem;
+  padding: 0.55rem 1.2rem;
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-family: inherit;
+  cursor: pointer;
+  transition: border-color var(--t-fast), color var(--t-fast);
+}
+.btn-ghost:hover { border-color: var(--c-accent-1); color: var(--c-accent-1); }
+
+/* ─── Карточка профиля ────────────────────────────────────────── */
+.profile-card {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 480px;
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: var(--r-card);
+  padding: 1.75rem 2rem;
+  box-shadow: var(--shadow-card);
+  animation: cardIn .4s cubic-bezier(.22,1,.36,1);
+}
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── Верхняя строка ─────────────────────────────────────────── */
+.p-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.75rem;
+}
+.back-btn {
+  display: flex; align-items: center; gap: 0.4rem;
+  color: var(--c-text-secondary);
+  text-decoration: none;
+  font-size: 0.85rem; font-weight: 500;
+  transition: color var(--t-fast);
+}
+.back-btn:hover { color: var(--c-accent-1); }
+
+.edit-toggle {
+  display: flex; align-items: center; gap: 0.4rem;
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  color: #94a3b8;
+  border-radius: 0.55rem;
+  padding: 0.4rem 0.85rem;
+  font-size: 0.82rem; font-family: inherit; font-weight: 600;
+  cursor: pointer;
+  transition: border-color var(--t-fast), color var(--t-fast);
+}
+.edit-toggle:hover { border-color: var(--c-accent-1); color: var(--c-accent-1); }
+
+/* ─── Аватар ──────────────────────────────────────────────────── */
+.avatar-row {
+  display: flex; align-items: center; gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.avatar {
+  width: 56px; height: 56px;
+  background: var(--grad-btn);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.5rem; font-weight: 800;
+  color: var(--c-bg);
+  flex-shrink: 0;
+}
+.user-info { display: flex; flex-direction: column; gap: 0.15rem; }
+.username { font-size: 1.2rem; font-weight: 800; color: var(--c-text-primary); letter-spacing: -.3px; }
+.useremail { font-size: 0.85rem; color: var(--c-text-secondary); }
+.userdate  { font-size: 0.78rem; color: var(--c-text-muted); }
+
+/* ─── Уведомления ────────────────────────────────────────────── */
+.msg {
+  display: flex; align-items: center; gap: 0.45rem;
+  padding: 0.6rem 0.9rem;
+  border-radius: 0.55rem;
+  font-size: 0.85rem;
+  margin-bottom: 1rem;
+}
+.msg-success { background: var(--c-success-bg); border: 1px solid var(--c-success-bdr); color: var(--c-success); }
+.msg-error   { background: var(--c-error-bg);   border: 1px solid var(--c-error-bdr);   color: var(--c-error); }
+
+/* ─── Info block (просмотр) ──────────────────────────────────── */
+.info-block { margin-bottom: 1.5rem; }
+.info-row {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  gap: 1rem; padding: 0.8rem 0;
+  border-bottom: 1px solid var(--c-surface);
+}
+.info-row:last-child { border-bottom: none; }
+.info-key {
+  font-size: 0.76rem; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.07em; color: var(--c-text-muted); flex-shrink: 0;
+}
+.info-val { color: #94a3b8; font-size: 0.9rem; text-align: right; }
+.empty { color: var(--c-text-muted); font-style: italic; }
+
+/* ─── Edit block ──────────────────────────────────────────────── */
+.edit-block { margin-bottom: 1.25rem; }
+.field { margin-bottom: 1rem; }
+.field-label {
+  display: block;
+  font-size: 0.76rem; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.07em;
+  color: var(--c-text-secondary); margin-bottom: 0.4rem;
+}
+.field-input {
+  width: 100%;
+  background: var(--c-input-bg);
+  border: 1px solid var(--c-border);
+  border-radius: var(--r-input);
+  color: var(--c-text-primary);
+  padding: 0.72rem 0.9rem;
+  font-size: 0.9rem; font-family: inherit;
+  outline: none; resize: vertical;
+  transition: border-color var(--t-fast), box-shadow var(--t-fast);
+}
+.field-input:focus {
+  border-color: var(--c-border-focus);
+  box-shadow: 0 0 0 3px rgba(20,184,166,.1);
+}
+.field-input.is-invalid { border-color: var(--c-error-bdr); }
+.field-input::placeholder { color: var(--c-placeholder); }
+
+.field-error {
+  display: block; color: var(--c-error);
+  font-size: 0.78rem; margin-top: 0.3rem; font-weight: 500;
+}
+
+.btn-primary {
+  width: 100%;
+  background: var(--grad-btn);
+  color: var(--c-bg);
+  border: none; border-radius: var(--r-input);
+  padding: 0.8rem;
+  font-size: 0.9rem; font-weight: 700; font-family: inherit;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+  transition: opacity var(--t-fast), transform .12s;
+}
+.btn-primary:hover:not(:disabled) { opacity: 0.87; transform: translateY(-1px); }
+.btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.spin {
+  display: inline-block; width: 14px; height: 14px;
+  border: 2px solid rgba(8,9,10,.25); border-top-color: var(--c-bg);
+  border-radius: 50%; animation: spin .6s linear infinite;
+}
+
+/* ─── Кнопка выхода ──────────────────────────────────────────── */
+.logout-row {
+  margin-top: 1.5rem; padding-top: 1.25rem;
+  border-top: 1px solid var(--c-border);
+}
+.btn-logout {
+  width: 100%;
+  background: transparent;
+  border: 1px solid var(--c-error-bdr);
+  color: var(--c-error);
+  border-radius: var(--r-input);
+  padding: 0.75rem;
+  font-size: 0.88rem; font-weight: 600; font-family: inherit;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+  transition: background var(--t-fast), border-color var(--t-fast);
+}
+.btn-logout:hover {
+  background: var(--c-error-bg);
+  border-color: rgba(239,68,68,.45);
+}
