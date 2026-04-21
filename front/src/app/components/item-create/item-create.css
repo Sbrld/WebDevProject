@@ -72,12 +72,17 @@ input:focus, select:focus, textarea:focus {
   padding: 24px;
   text-align: center;
   background: #fafafa;
-  transition: border-color 0.2s;
+  transition: border-color 0.2s, background 0.2s;
   position: relative;
   cursor: pointer;
 }
 
 .file-input-wrapper:hover {
+  border-color: #4f46e5;
+  background: #f5f3ff;
+}
+
+.file-input-wrapper.has-file {
   border-color: #4f46e5;
   background: #f5f3ff;
 }
@@ -101,9 +106,20 @@ input:focus, select:focus, textarea:focus {
   display: block;
 }
 
+.file-input-wrapper.has-file .upload-icon {
+  color: #4f46e5;
+}
+
 .file-input-wrapper p {
   font-size: 14px;
   color: #6b7280;
+  margin: 0;
+}
+
+.file-selected {
+  font-size: 14px;
+  color: #4f46e5 !important;
+  font-weight: 600;
   margin: 0;
 }
 
@@ -125,6 +141,10 @@ input:focus, select:focus, textarea:focus {
   cursor: pointer;
   margin-top: 8px;
   transition: opacity 0.2s, transform 0.1s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 }
 
 .btn-submit:hover {

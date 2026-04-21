@@ -54,9 +54,13 @@
 
     <div class="form-group">
       <label>Image (optional)</label>
-      <div class="file-input-wrapper">
+      <div class="file-input-wrapper" [class.has-file]="selectedImageName">
         <lucide-icon [img]="Upload" size="24" class="upload-icon"></lucide-icon>
-        <p>Click to upload image</p>
+        @if (selectedImageName) {
+          <p class="file-selected">{{ selectedImageName }}</p>
+        } @else {
+          <p>Click to upload image</p>
+        }
         <input type="file" accept="image/*" (change)="onImageChange($event)" />
         <p class="file-hint">PNG, JPG up to 10MB</p>
       </div>

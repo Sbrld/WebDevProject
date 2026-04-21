@@ -17,6 +17,7 @@ export class ItemCreate {
 
   errorMessage = '';
   loading = false;
+  selectedImageName = '';
 
   formData = {
     title: '',
@@ -33,6 +34,7 @@ export class ItemCreate {
 
   onImageChange(event: any) {
     this.selectedImage = event.target.files[0];
+    this.selectedImageName = this.selectedImage ? this.selectedImage.name : '';
   }
 
   onSubmit() {
