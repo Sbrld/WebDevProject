@@ -21,8 +21,8 @@
         <div class="item-info">
           <h2>{{ item.title }}</h2>
           <div class="item-meta">
-            <span class="status {{ item.status }}">{{ item.status }}</span>
-            <span class="category-badge">{{ item.category }}</span>
+            <span class="status {{ item.status }}">{{ getStatusLabel(item.status) }}</span>
+            <span class="category-badge">{{ getCategoryLabel(item.category) }}</span>
           </div>
 
           <div class="info-grid">
@@ -40,29 +40,31 @@
             </div>
             <div class="info-item">
               <div class="label"><lucide-icon [img]="Tag" size="12"></lucide-icon> Category</div>
-              <div class="value">{{ item.category }}</div>
+              <div class="value">{{ getCategoryLabel(item.category) }}</div>
             </div>
           </div>
 
           <div class="description-box">{{ item.description }}</div>
 
           <div class="actions">
-            <button class="btn-edit" (click)="toggleEdit()">
-              <lucide-icon [img]="Edit" size="15"></lucide-icon> Edit
-            </button>
-            <button class="btn-delete" (click)="deleteItem()">
-              <lucide-icon [img]="Trash2" size="15"></lucide-icon> Delete
-            </button>
-            <a class="btn-back" routerLink="/">
+            @if (canManageItem()) {
+              <button class="btn-edit" (click)="toggleEdit()">
+                <lucide-icon [img]="Edit" size="15"></lucide-icon> Edit
+              </button>
+              <button class="btn-delete" (click)="deleteItem()">
+                <lucide-icon [img]="Trash2" size="15"></lucide-icon> Delete
+              </button>
+            }
+            <a class="btn-back" routerLink="/items">
               <lucide-icon [img]="ArrowLeft" size="15"></lucide-icon> Back
             </a>
           </div>
         </div>
       }
 
-      @if (isEditing) {
+      @if (isEditing && canManageItem()) {
         <div class="edit-form">
-          <h3>Edit Item</h3>
+          <h3>Edit item</h3>
           <div class="form-group">
             <label>Title</label>
             <input [(ngModel)]="editData.title" name="title" />

@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { LucideAngularModule, MapPin, Calendar, User, Tag, ArrowLeft, Edit, Trash2, Save, X, Phone, Key, FileText, Backpack, Shirt, Package } from 'lucide-angular';
 import { ItemService } from '../../services/item';
 import { Item } from '../../models/item';
+import { AuthService } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-item-detail',
@@ -34,12 +35,29 @@ export class ItemDetail implements OnInit {
   loading = false;
   isEditing = false;
 
+  private readonly statusLabels: Record<string, string> = {
+    lost: 'Lost',
+    found: 'Found',
+    claimed: 'Claimed',
+    returned: 'Returned',
+  };
+
+  private readonly categoryLabels: Record<string, string> = {
+    phone: 'Phone',
+    keys: 'Keys',
+    documents: 'Documents',
+    backpack: 'Backpack',
+    clothes: 'Clothes',
+    other: 'Other',
+  };
+
   editData = { title: '', description: '', category: '', status: '', location: '', date: '' };
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private itemService: ItemService
+    private itemService: ItemService,
+    public auth: AuthService
   ) {}
 
   ngOnInit() {
@@ -62,23 +80,45 @@ export class ItemDetail implements OnInit {
     });
   }
 
-  toggleEdit() { this.isEditing = !this.isEditing; }
+  toggleEdit() {
+    this.isEditing = !this.isEditing;
+  }
 
   saveEdit() {
     if (!this.item?.id) return;
     const data = new FormData();
     Object.entries(this.editData).forEach(([k, v]) => data.append(k, v));
     this.itemService.updateItem(this.item.id, data).subscribe({
-      next: (updated) => { this.item = updated; this.isEditing = false; },
-      error: () => { this.errorMessage = 'Failed to update item.'; }
+      next: (updated) => {
+        this.item = updated;
+        this.isEditing = false;
+      },
+      error: () => {
+        this.errorMessage = 'Failed to update item.';
+      }
     });
   }
 
   deleteItem() {
     if (!this.item?.id || !confirm('Are you sure?')) return;
     this.itemService.deleteItem(this.item.id).subscribe({
-      next: () => this.router.navigate(['/']),
-      error: () => { this.errorMessage = 'Failed to delete item.'; }
+      next: () => this.router.navigate(['/my-items']),
+      error: () => {
+        this.errorMessage = 'Failed to delete item.';
+      }
     });
+  }
+
+  canManageItem(): boolean {
+    const currentUser = this.auth.currentUser();
+    return !!currentUser && !!this.item && currentUser.id === this.item.owner;
+  }
+
+  getStatusLabel(status: string): string {
+    return this.statusLabels[status] ?? status;
+  }
+
+  getCategoryLabel(category: string): string {
+    return this.categoryLabels[category] ?? category;
   }
 }

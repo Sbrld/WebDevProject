@@ -1,8 +1,8 @@
 <div class="container">
   <div class="form-card">
     <div class="form-header">
-      <h2>Add New Item</h2>
-      <p>Fill in the details about the lost or found item</p>
+      <h2>Post an item</h2>
+      <p>Share enough detail so someone can recognize it and act quickly.</p>
     </div>
 
     @if (errorMessage) {
@@ -16,7 +16,7 @@
 
     <div class="form-group">
       <label>Description</label>
-      <textarea [(ngModel)]="formData.description" name="description" placeholder="Describe the item in detail..." rows="4"></textarea>
+      <textarea [(ngModel)]="formData.description" name="description" placeholder="Describe color, brand, distinguishing marks, and any context..." rows="4"></textarea>
     </div>
 
     <div class="form-row">
@@ -44,7 +44,7 @@
     <div class="form-row">
       <div class="form-group">
         <label>Location</label>
-        <input [(ngModel)]="formData.location" name="location" placeholder="Where was it lost/found?" />
+        <input [(ngModel)]="formData.location" name="location" placeholder="Where was it lost or found?" />
       </div>
       <div class="form-group">
         <label>Date</label>
@@ -59,16 +59,16 @@
         @if (selectedImageName) {
           <p class="file-selected">{{ selectedImageName }}</p>
         } @else {
-          <p>Click to upload image</p>
+          <p>Click to upload an image</p>
         }
         <input type="file" accept="image/*" (change)="onImageChange($event)" />
-        <p class="file-hint">PNG, JPG up to 10MB</p>
+        <p class="file-hint">PNG or JPG up to 10MB</p>
       </div>
     </div>
 
     <button class="btn-submit" (click)="onSubmit()" [disabled]="loading">
       <lucide-icon [img]="Plus" size="16"></lucide-icon>
-      @if (loading) { Saving... } @else { Add Item }
+      @if (loading) { Saving... } @else { Publish item }
     </button>
   </div>
 </div>

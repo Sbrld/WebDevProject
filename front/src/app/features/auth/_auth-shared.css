@@ -1,7 +1,5 @@
 /* Общие стили для всех страниц аутентификации (login, register, profile) */
 
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
-
 :root {
   --c-bg:            #08090a;
   --c-surface:       #0f1117;
@@ -38,7 +36,7 @@
   padding: 1.5rem;
   position: relative;
   overflow: hidden;
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: "Segoe UI", "Trebuchet MS", sans-serif;
 }
 
 .glow {

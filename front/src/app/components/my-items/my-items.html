@@ -1,7 +1,7 @@
 <div class="container">
   <div class="page-header">
     <h2>My Items</h2>
-    <p>Manage your lost and found listings</p>
+    <p>Review, update, and clean up the listings you own.</p>
   </div>
 
   @if (loading) { <div class="loading">Loading your items...</div> }
@@ -11,8 +11,8 @@
     <div class="empty">
       <lucide-icon [img]="Package" size="56" class="empty-icon"></lucide-icon>
       <p>You haven't posted any items yet.</p>
-      <a routerLink="/create" class="btn-add">
-        <lucide-icon [img]="Plus" size="16"></lucide-icon> Post an Item
+      <a routerLink="/create-item" class="btn-add">
+        <lucide-icon [img]="Plus" size="16"></lucide-icon> Post an item
       </a>
     </div>
   }
@@ -35,13 +35,13 @@
         <div class="item-info">
           <h3>{{ item.title }}</h3>
           <div class="item-meta">
-            <span class="status {{ item.status }}">{{ item.status }}</span>
-            <span class="category-badge">{{ item.category }}</span>
+            <span class="status {{ item.status }}">{{ getStatusLabel(item.status) }}</span>
+            <span class="category-badge">{{ getCategoryLabel(item.category) }}</span>
           </div>
           <p><lucide-icon [img]="MapPin" size="13"></lucide-icon> {{ item.location }}</p>
           <p><lucide-icon [img]="Calendar" size="13"></lucide-icon> {{ item.date }}</p>
-          <a [routerLink]="['/items', item.id]">
-            <button class="btn-view">View / Edit</button>
+          <a [routerLink]="['/item', item.id]">
+            <button class="btn-view">View / edit</button>
           </a>
         </div>
       </div>

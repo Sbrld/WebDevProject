@@ -79,7 +79,7 @@ export class RegisterComponent {
       })
       .subscribe({
         // FIX: было navigate(['/']) → бесконечный редирект т.к. маршрут 'home' не создан
-        next: () => this.router.navigate(['/profile']),
+        next: () => this.router.navigate(['/home']),
         error: (err) => {
           this.errorMsg = parseBackendErrors(err);
           this.loading = false;
