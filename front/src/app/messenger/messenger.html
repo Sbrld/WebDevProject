@@ -1,0 +1,151 @@
+<div class="messenger">
+  <div class="messenger-header">
+    <h1 class="messenger-title">Messages</h1>
+    <div class="messenger-actions">
+      <div class="user-selector">
+        <input
+          type="number"
+          [(ngModel)]="userId"
+          placeholder="User ID"
+          class="user-input"
+          (keyup.enter)="loadConversations()"
+        />
+        <button class="btn-load" (click)="loadConversations()">Load</button>
+      </div>
+      @if (userId) {
+        <button class="btn-new-conv" (click)="openNewConv()">+ New Conversation</button>
+      }
+    </div>
+  </div>
+
+  <div class="messenger-layout">
+    <!-- Left: conversation list -->
+    <div class="conv-panel">
+      @if (loading()) {
+        <div class="state-msg">Loading...</div>
+      }
+      @if (error()) {
+        <div class="state-error">{{ error() }}</div>
+      }
+      @if (!loading() && !error() && userId && conversations().length === 0) {
+        <div class="state-msg">No conversations yet.</div>
+      }
+      @if (!userId) {
+        <div class="state-msg">Enter a user ID to load messages.</div>
+      }
+      <ul class="conv-list">
+        @for (conv of conversations(); track trackConv($index, conv)) {
+          <li class="conv-card" [class.active]="isSelected(conv)" (click)="selectConv(conv)">
+            <div class="conv-top">
+              <span class="other-user">{{ conv.other_user_name }}</span>
+              <span class="status-badge status-{{ conv.claim_status }}">
+                {{ statusLabel(conv.claim_status) }}
+              </span>
+            </div>
+            <div class="conv-claim">{{ conv.claim_title }}</div>
+            <div class="conv-last-msg">{{ conv.last_message }}</div>
+          </li>
+        }
+      </ul>
+    </div>
+
+    <!-- Right: chat panel -->
+    <div class="chat-panel">
+      @if (!selectedConv()) {
+        <div class="chat-empty">Select a conversation to view messages.</div>
+      } @else {
+        <div class="chat-header">
+          <span class="chat-with">{{ selectedConv()!.other_user_name }}</span>
+          <span class="status-badge status-{{ selectedConv()!.claim_status }}">
+            {{ statusLabel(selectedConv()!.claim_status) }}
+          </span>
+          <span class="chat-claim-title">{{ selectedConv()!.claim_title }}</span>
+        </div>
+
+        <div class="chat-messages" #chatMessages>
+          @if (threadLoading()) {
+            <div class="state-msg">Loading messages...</div>
+          }
+          @for (msg of threadMessages(); track msg.id) {
+            <div class="message-row" [class.mine]="isMine(msg)">
+              <div class="message-bubble">
+                <div class="message-content">{{ msg.content }}</div>
+                <div class="message-time">{{ msg.created_at | date:'shortTime' }}</div>
+              </div>
+            </div>
+          }
+        </div>
+
+        <div class="chat-input-area">
+          <textarea
+            [(ngModel)]="newMessage"
+            placeholder="Type a message… (Enter to send, Shift+Enter for new line)"
+            class="message-textarea"
+            (keydown.enter)="onEnterKey($event)"
+            rows="2"
+          ></textarea>
+          <button
+            class="btn-send"
+            (click)="sendMessage()"
+            [disabled]="sending() || !newMessage.trim()"
+          >
+            {{ sending() ? '…' : 'Send' }}
+          </button>
+        </div>
+      }
+    </div>
+  </div>
+</div>
+
+<!-- New Conversation Modal -->
+@if (showNewConv) {
+  <div class="overlay" (click)="showNewConv = false"></div>
+  <div class="modal" role="dialog" aria-modal="true">
+    <div class="modal-header">
+      <h2>New Conversation</h2>
+      <button class="close-btn" (click)="showNewConv = false">×</button>
+    </div>
+
+    <div class="field">
+      <label>Claim <span class="required">*</span></label>
+      <select [(ngModel)]="newConvClaimId" class="select-input">
+        <option value="">Select a claim…</option>
+        @for (claim of claims(); track claim.id) {
+          <option [value]="claim.id">{{ claim.title }} — {{ statusLabel(claim.status) }}</option>
+        }
+      </select>
+    </div>
+
+    <div class="field">
+      <label>Recipient <span class="required">*</span></label>
+      <select [(ngModel)]="newConvRecipientId" class="select-input">
+        <option value="">Select a recipient…</option>
+        @for (user of users(); track user.id) {
+          <option [value]="user.id">{{ user.display_name }}</option>
+        }
+      </select>
+    </div>
+
+    <div class="field">
+      <label>Message <span class="required">*</span></label>
+      <textarea
+        [(ngModel)]="newConvContent"
+        placeholder="Type your first message…"
+        rows="3"
+        class="select-input"
+        style="resize: vertical;"
+      ></textarea>
+    </div>
+
+    @if (newConvError()) {
+      <div class="state-error">{{ newConvError() }}</div>
+    }
+
+    <div class="modal-actions">
+      <button class="btn-secondary" (click)="showNewConv = false">Cancel</button>
+      <button class="btn-primary" (click)="submitNewConv()" [disabled]="newConvLoading()">
+        {{ newConvLoading() ? 'Sending…' : 'Send' }}
+      </button>
+    </div>
+  </div>
+}
