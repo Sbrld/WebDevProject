@@ -3,19 +3,20 @@ from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from .models import Claim, Message
+
+User = get_user_model()
 from .serializers import ClaimSerializer, MessageSerializer, UserSerializer
 
 
 class ClaimViewSet(viewsets.ModelViewSet):
     queryset = Claim.objects.all().order_by('-created_at')
     serializer_class = ClaimSerializer
+    permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
-        # No auth yet — auto-assign to a default dev user
-        user, _ = User.objects.get_or_create(username='default_user')
-        serializer.save(reported_by=user)
+        serializer.save(reported_by=self.request.user)
 
 
 class UserViewSet(viewsets.ReadOnlyModelViewSet):

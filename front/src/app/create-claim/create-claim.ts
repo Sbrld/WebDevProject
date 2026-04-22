@@ -17,13 +17,6 @@ export class CreateClaimComponent {
   submitting = false;
   error: string | null = null;
 
-  readonly statusOptions = [
-    { value: 'lost', label: 'Lost' },
-    { value: 'found', label: 'Found' },
-    { value: 'claimed', label: 'Claimed' },
-    { value: 'returned', label: 'Returned' },
-  ];
-
   constructor(private fb: FormBuilder, private claimService: ClaimService) {
     this.form = this.fb.group({
       title: ['', Validators.required],
@@ -36,11 +29,16 @@ export class CreateClaimComponent {
   }
 
   submit(): void {
-    if (this.form.invalid) return;
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
     this.submitting = true;
     this.error = null;
 
-    this.claimService.createClaim(this.form.value).subscribe({
+    const payload = { ...this.form.value, date: this.form.value.date || null };
+
+    this.claimService.createClaim(payload).subscribe({
       next: () => {
         this.submitting = false;
         this.closed.emit(true);

@@ -105,8 +105,9 @@ export class MessengerComponent implements OnInit {
     });
   }
 
-  onEnterKey(event: KeyboardEvent): void {
-    if (!event.shiftKey) {
+  onEnterKey(event: Event): void {
+    const ke = event as KeyboardEvent;
+    if (!ke.shiftKey) {
       event.preventDefault();
       this.sendMessage();
     }

@@ -12,7 +12,7 @@ import { authGuard } from './core/guards/auth.guard';
 import { ProfileComponent } from './features/auth/profile/profile';
 import { RegisterComponent } from './features/auth/register/register';
 import { LoginComponent } from './features/auth/login/login';
-import { CreateClaimComponent } from './create-claim/create-claim';
+import { ClaimsComponent } from './features/claims/claims';
 
 export const routes: Routes = [
   // Редирект на логин по умолчанию
@@ -64,7 +64,7 @@ export const routes: Routes = [
   { path: 'item/:id', component: ItemDetail, canActivate: [authGuard] },
 
   // Страницы из feature/claims
-  { path: 'claims', component: CreateClaimComponent, canActivate: [authGuard] },
+  { path: 'claims', component: ClaimsComponent, canActivate: [authGuard] },
   { path: 'messages', component: MessengerComponent, canActivate: [authGuard] },
 
   // Если ввели неправильный адрес — отправляем на логин

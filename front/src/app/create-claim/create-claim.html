@@ -18,9 +18,10 @@
     <div class="field">
       <label for="status">Status <span class="required">*</span></label>
       <select id="status" formControlName="status">
-        @for (opt of statusOptions; track opt.value) {
-          <option [value]="opt.value">{{ opt.label }}</option>
-        }
+        <option value="lost">Lost</option>
+        <option value="found">Found</option>
+        <option value="claimed">Claimed</option>
+        <option value="returned">Returned</option>
       </select>
     </div>
 
@@ -50,9 +51,7 @@
 
     <div class="actions">
       <button type="button" class="btn-secondary" (click)="close()">Cancel</button>
-      <button type="submit" class="btn-primary" [disabled]="submitting">
-        {{ submitting ? 'Saving…' : 'Submit Claim' }}
-      </button>
+      <button type="submit" class="btn-primary" [disabled]="submitting">Submit Claim</button>
     </div>
   </form>
 </div>

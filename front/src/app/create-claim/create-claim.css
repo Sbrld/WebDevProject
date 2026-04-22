@@ -81,8 +81,8 @@
 .field input:focus,
 .field select:focus,
 .field textarea:focus {
-  border-color: #6366f1;
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+  border-color: #28505f;
+  box-shadow: 0 0 0 3px rgba(21, 50, 61, 0.12);
 }
 
 .field textarea {
@@ -119,12 +119,12 @@
 }
 
 .btn-primary {
-  background: #6366f1;
-  color: #fff;
+  background: linear-gradient(135deg, #15323d, #28505f);
+  color: #fffaf3;
 }
 
 .btn-primary:hover:not(:disabled) {
-  background: #4f46e5;
+  box-shadow: 0 8px 20px rgba(21, 50, 61, 0.22);
 }
 
 .btn-primary:disabled {

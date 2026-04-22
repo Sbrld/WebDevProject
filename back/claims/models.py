@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.conf import settings
 
 
 class Claim(models.Model):
@@ -20,7 +20,7 @@ class Claim(models.Model):
         default=Status.LOST,
     )
     reported_by = models.ForeignKey(
-        User,
+        settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         related_name='claims',
     )
@@ -38,12 +38,12 @@ class Message(models.Model):
         related_name='messages',
     )
     sender = models.ForeignKey(
-        User,
+        settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         related_name='sent_messages',
     )
     recipient = models.ForeignKey(
-        User,
+        settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         related_name='received_messages',
     )
