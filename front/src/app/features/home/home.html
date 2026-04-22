@@ -1,38 +1,62 @@
 <div class="home-page">
-  <div class="welcome-section">
-    <h1 class="main-title">Добро пожаловать в {{ title }}</h1>
-    <p class="subtitle">{{ subtitle }}</p>
+  <section class="hero-card">
+    <div class="hero-copy">
+      <span class="eyebrow">Recovery dashboard</span>
+      <h1 class="main-title">Make lost-and-found simpler for everyone.</h1>
+      <p class="subtitle">{{ subtitle }}</p>
 
-    <div class="actions">
-      <a routerLink="/create-item" class="btn-primary">
-        Опубликовать вещь
+      <div class="actions">
+        <a routerLink="/create-item" class="btn-primary">Post an item</a>
+        <a routerLink="/items" class="btn-secondary">Browse listings</a>
+      </div>
+    </div>
+
+    <div class="hero-panel">
+      <div class="panel-card">
+        <span class="panel-label">Today</span>
+        <strong>Keep reports clear, searchable, and easy to act on.</strong>
+        <p>Use category, location, and status to cut through clutter and find the right listing quickly.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="quick-stats">
+    <div class="stat-card">
+      <h3>Faster posting</h3>
+      <p class="stat-number">1</p>
+      <p class="stat-label">form to publish a lost or found item</p>
+    </div>
+    <div class="stat-card">
+      <h3>Clear browsing</h3>
+      <p class="stat-number">3</p>
+      <p class="stat-label">entry points: all, lost, and found</p>
+    </div>
+    <div class="stat-card">
+      <h3>Owner control</h3>
+      <p class="stat-number">100%</p>
+      <p class="stat-label">edit and delete actions limited to the item owner</p>
+    </div>
+  </section>
+
+  <section class="recent-section">
+    <div class="section-header">
+      <h2>Recommended next steps</h2>
+      <p>Use the shortcuts below to get to the common actions without hunting through the menu.</p>
+    </div>
+
+    <div class="shortcut-grid">
+      <a routerLink="/lost" class="shortcut-card">
+        <h3>Check lost items</h3>
+        <p>See what people are still searching for and check whether you have a match.</p>
       </a>
-      <a routerLink="/items" class="btn-secondary">
-        Посмотреть все вещи
+      <a routerLink="/found" class="shortcut-card">
+        <h3>Review found items</h3>
+        <p>Browse recovered belongings and help owners identify them quickly.</p>
+      </a>
+      <a routerLink="/my-items" class="shortcut-card">
+        <h3>Manage your posts</h3>
+        <p>Update details, remove outdated listings, or continue an active recovery.</p>
       </a>
     </div>
-  </div>
-
-  <div class="quick-stats">
-    <div class="stat-card">
-      <h3>Найденные вещи</h3>
-      <p class="stat-number">124</p>
-      <p class="stat-label">за последний месяц</p>
-    </div>
-    <div class="stat-card">
-      <h3>Потерянные вещи</h3>
-      <p class="stat-number">87</p>
-      <p class="stat-label">ожидают хозяина</p>
-    </div>
-    <div class="stat-card">
-      <h3>Успешных возвратов</h3>
-      <p class="stat-number">203</p>
-      <p class="stat-label">людей получили свои вещи</p>
-    </div>
-  </div>
-
-  <div class="recent-section">
-    <h2>Недавние объявления</h2>
-    <p class="placeholder-text">Здесь будет список недавних вещей (пока пусто)</p>
-  </div>
+  </section>
 </div>

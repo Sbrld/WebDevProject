@@ -1,7 +1,7 @@
 <div class="container">
   <div class="page-header">
-    <h2>Lost & Found Items</h2>
-    <p>Browse items or post your own lost or found item</p>
+    <h2>{{ pageTitle }}</h2>
+    <p>{{ pageDescription }}</p>
   </div>
 
   <div class="filters">
@@ -44,7 +44,7 @@
   @if (!loading && items.length === 0 && !errorMessage) {
     <div class="empty">
       <lucide-icon [img]="Package" size="48" class="empty-icon"></lucide-icon>
-      <p>No items found. Try different filters!</p>
+      <p>No items found. Try different filters.</p>
     </div>
   }
 
@@ -66,13 +66,13 @@
         <div class="item-info">
           <h3>{{ item.title }}</h3>
           <div class="item-meta">
-            <span class="status {{ item.status }}">{{ item.status }}</span>
-            <span class="category-badge">{{ item.category }}</span>
+            <span class="status {{ item.status }}">{{ getStatusLabel(item.status) }}</span>
+            <span class="category-badge">{{ getCategoryLabel(item.category) }}</span>
           </div>
           <p><lucide-icon [img]="MapPin" size="13"></lucide-icon> {{ item.location }}</p>
           <p><lucide-icon [img]="Calendar" size="13"></lucide-icon> {{ item.date }}</p>
-          <a [routerLink]="['/items', item.id]">
-            <button class="btn-view">View Details</button>
+          <a [routerLink]="['/item', item.id]">
+            <button class="btn-view">View details</button>
           </a>
         </div>
       </div>

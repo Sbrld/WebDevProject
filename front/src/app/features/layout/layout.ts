@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
 import { CommonModule } from '@angular/common';
 
@@ -11,14 +11,20 @@ import { CommonModule } from '@angular/common';
   styleUrl: './layout.css',
 })
 export class LayoutComponent {
-
-  constructor(public auth: AuthService) {}
+  constructor(
+    public auth: AuthService,
+    private router: Router
+  ) {}
 
   logout() {
     this.auth.logout().subscribe({
       next: () => {
-        window.location.href = '/login';
-      }
+        this.router.navigate(['/login']);
+      },
+      error: () => {
+        localStorage.clear();
+        this.router.navigate(['/login']);
+      },
     });
   }
 }

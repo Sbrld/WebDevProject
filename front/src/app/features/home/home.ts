@@ -11,5 +11,5 @@ import { RouterLink } from '@angular/router';
 })
 export class HomeComponent {
   title = 'FindIt';
-  subtitle = 'Платформа для потерянных и найденных вещей';
+  subtitle = 'The fastest way to report lost items, publish found ones, and reconnect people with what matters.';
 }

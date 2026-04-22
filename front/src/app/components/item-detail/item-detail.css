@@ -1,14 +1,14 @@
 .container {
   max-width: 800px;
-  margin: 40px auto;
-  padding: 0 24px;
+  margin: 0 auto;
+  padding: 0;
 }
 
 .detail-card {
-  background: white;
-  border-radius: 16px;
-  border: 1px solid #e5e7eb;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+  background: rgba(255, 252, 247, 0.95);
+  border-radius: 24px;
+  border: 1px solid rgba(21, 50, 61, 0.08);
+  box-shadow: 0 18px 42px rgba(24, 42, 49, 0.09);
   overflow: hidden;
 }
 
@@ -21,11 +21,12 @@
 .no-image {
   width: 100%;
   height: 200px;
-  background: linear-gradient(135deg, #ede9fe, #dbeafe);
+  background: linear-gradient(135deg, #ffe8bd, #c9e9eb);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 64px;
+  color: #28505f;
 }
 
 .item-info {
@@ -35,7 +36,7 @@
 .item-info h2 {
   font-size: 28px;
   font-weight: 700;
-  color: #1e1b4b;
+  color: #15323d;
   margin-bottom: 12px;
 }
 
@@ -56,17 +57,32 @@
   letter-spacing: 0.5px;
 }
 
-.status.lost { background: #fef2f2; color: #dc2626; }
-.status.found { background: #f0fdf4; color: #16a34a; }
-.status.claimed { background: #fffbeb; color: #d97706; }
-.status.returned { background: #eff6ff; color: #2563eb; }
+.status.lost {
+  background: #ffe5de;
+  color: #b84738;
+}
+
+.status.found {
+  background: #ddf3ea;
+  color: #23745f;
+}
+
+.status.claimed {
+  background: #fff0cf;
+  color: #a46708;
+}
+
+.status.returned {
+  background: #dbeaf2;
+  color: #1d607b;
+}
 
 .category-badge {
   padding: 5px 14px;
   border-radius: 20px;
   font-size: 12px;
-  background: #f3f4f6;
-  color: #374151;
+  background: #edf2f3;
+  color: #42535b;
 }
 
 .info-grid {
@@ -77,9 +93,10 @@
 }
 
 .info-item {
-  background: #f9fafb;
-  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.72);
+  border-radius: 14px;
   padding: 14px 16px;
+  border: 1px solid rgba(21, 50, 61, 0.05);
 }
 
 .info-item .label {
@@ -98,13 +115,14 @@
 }
 
 .description-box {
-  background: #f9fafb;
-  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.72);
+  border-radius: 14px;
   padding: 16px;
   margin-bottom: 24px;
   color: #374151;
   font-size: 15px;
   line-height: 1.6;
+  border: 1px solid rgba(21, 50, 61, 0.05);
 }
 
 .actions {
@@ -115,24 +133,26 @@
 
 .btn-edit {
   padding: 11px 24px;
-  background: #4f46e5;
+  background: linear-gradient(135deg, #15323d, #28505f);
   color: white;
   border: none;
-  border-radius: 10px;
+  border-radius: 12px;
   cursor: pointer;
   font-size: 14px;
   font-weight: 600;
   transition: background 0.2s;
 }
 
-.btn-edit:hover { background: #4338ca; }
+.btn-edit:hover {
+  background: #1d4452;
+}
 
 .btn-delete {
   padding: 11px 24px;
   background: white;
-  color: #dc2626;
-  border: 1.5px solid #fecaca;
-  border-radius: 10px;
+  color: #b84738;
+  border: 1.5px solid #f3c5bd;
+  border-radius: 12px;
   cursor: pointer;
   font-size: 14px;
   font-weight: 600;
@@ -140,22 +160,24 @@
 }
 
 .btn-delete:hover {
-  background: #fef2f2;
+  background: #fff0ee;
 }
 
 .btn-back {
   padding: 11px 24px;
-  background: white;
-  color: #6b7280;
-  border: 1.5px solid #e5e7eb;
-  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.82);
+  color: #52616b;
+  border: 1.5px solid rgba(21, 50, 61, 0.1);
+  border-radius: 12px;
   cursor: pointer;
   font-size: 14px;
   text-decoration: none;
   transition: all 0.2s;
 }
 
-.btn-back:hover { background: #f3f4f6; }
+.btn-back:hover {
+  background: white;
+}
 
 .edit-form {
   padding: 32px;
@@ -164,7 +186,7 @@
 .edit-form h3 {
   font-size: 22px;
   font-weight: 700;
-  color: #1e1b4b;
+  color: #15323d;
   margin-bottom: 24px;
 }
 
@@ -198,9 +220,9 @@
 .form-group select:focus,
 .form-group textarea:focus {
   outline: none;
-  border-color: #4f46e5;
+  border-color: #28505f;
   background: white;
-  box-shadow: 0 0 0 3px rgba(79,70,229,0.1);
+  box-shadow: 0 0 0 3px rgba(40, 80, 95, 0.12);
 }
 
 .form-row {
@@ -217,11 +239,23 @@
 }
 
 .error {
-  background: #fef2f2;
-  color: #dc2626;
+  background: #fff0ee;
+  color: #b84738;
   padding: 12px 16px;
-  border-radius: 10px;
-  border: 1px solid #fecaca;
+  border-radius: 12px;
+  border: 1px solid #f3c5bd;
   margin-bottom: 20px;
   font-size: 14px;
+}
+
+@media (max-width: 640px) {
+  .item-info,
+  .edit-form {
+    padding: 20px;
+  }
+
+  .info-grid,
+  .form-row {
+    grid-template-columns: 1fr;
+  }
 }

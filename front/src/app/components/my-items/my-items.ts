@@ -26,16 +26,48 @@ export class MyItems implements OnInit {
   errorMessage = '';
   loading = false;
 
+  private readonly statusLabels: Record<string, string> = {
+    lost: 'Lost',
+    found: 'Found',
+    claimed: 'Claimed',
+    returned: 'Returned',
+  };
+
+  private readonly categoryLabels: Record<string, string> = {
+    phone: 'Phone',
+    keys: 'Keys',
+    documents: 'Documents',
+    backpack: 'Backpack',
+    clothes: 'Clothes',
+    other: 'Other',
+  };
+
   constructor(private itemService: ItemService) {}
 
-  ngOnInit() { this.loadMyItems(); }
+  ngOnInit() {
+    this.loadMyItems();
+  }
 
   loadMyItems() {
     this.loading = true;
     this.errorMessage = '';
     this.itemService.getMyItems().subscribe({
-      next: (data) => { this.items = data; this.loading = false; },
-      error: () => { this.errorMessage = 'Failed to load your items. Make sure you are logged in.'; this.loading = false; }
+      next: (data) => {
+        this.items = data;
+        this.loading = false;
+      },
+      error: () => {
+        this.errorMessage = 'Failed to load your items. Make sure you are logged in.';
+        this.loading = false;
+      }
     });
+  }
+
+  getStatusLabel(status: string): string {
+    return this.statusLabels[status] ?? status;
+  }
+
+  getCategoryLabel(category: string): string {
+    return this.categoryLabels[category] ?? category;
   }
 }

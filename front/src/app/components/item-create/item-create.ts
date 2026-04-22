@@ -38,6 +38,11 @@ export class ItemCreate {
   }
 
   onSubmit() {
+    if (!this.formData.title || !this.formData.description || !this.formData.category || !this.formData.location || !this.formData.date) {
+      this.errorMessage = 'Fill in all required fields before publishing.';
+      return;
+    }
+
     this.loading = true;
     this.errorMessage = '';
     const data = new FormData();
@@ -50,7 +55,7 @@ export class ItemCreate {
     if (this.selectedImage) data.append('image', this.selectedImage);
 
     this.itemService.createItem(data).subscribe({
-      next: () => this.router.navigate(['/']),
+      next: () => this.router.navigate(['/my-items']),
       error: () => {
         this.errorMessage = 'Failed to create item. Make sure you are logged in.';
         this.loading = false;

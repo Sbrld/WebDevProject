@@ -1,48 +1,31 @@
 <div class="app-container">
-  <!-- Левый навбар -->
   <nav class="sidebar">
     <div class="logo">
+      <span class="brand-kicker">Lost and found</span>
       <span class="brand-name">FindIt</span>
+      <p class="brand-copy">A cleaner way to publish, browse, and recover items on campus.</p>
     </div>
 
     <div class="nav-menu">
-      <a routerLink="/home" routerLinkActive="active" class="nav-item">
-        Главная
-      </a>
-      <a routerLink="/items" routerLinkActive="active" class="nav-item">
-        Все вещи
-      </a>
-      <a routerLink="/found" routerLinkActive="active" class="nav-item">
-        Найденные вещи
-      </a>
-      <a routerLink="/lost" routerLinkActive="active" class="nav-item">
-        Потерянные вещи
-      </a>
-      <a routerLink="/my-items" routerLinkActive="active" class="nav-item">
-        Мои вещи
-      </a>
+      <a routerLink="/home" routerLinkActive="active" class="nav-item">Dashboard</a>
+      <a routerLink="/items" routerLinkActive="active" class="nav-item">All items</a>
+      <a routerLink="/found" routerLinkActive="active" class="nav-item">Found items</a>
+      <a routerLink="/lost" routerLinkActive="active" class="nav-item">Lost items</a>
+      <a routerLink="/my-items" routerLinkActive="active" class="nav-item">My items</a>
+      <a routerLink="/create-item" routerLinkActive="active" class="nav-item nav-item-accent">Post item</a>
     </div>
 
     <div class="nav-menu">
-      <a routerLink="/claims" routerLinkActive="active" class="nav-item">
-        Заявки
-      </a>
-      <a routerLink="/messages" routerLinkActive="active" class="nav-item">
-        Сообщения
-      </a>
+      <a routerLink="/claims" routerLinkActive="active" class="nav-item">Claims</a>
+      <a routerLink="/messages" routerLinkActive="active" class="nav-item">Сообщения</a>
     </div>
 
     <div class="nav-bottom">
-      <a routerLink="/profile" routerLinkActive="active" class="nav-item profile-item">
-        Профиль
-      </a>
-      <button (click)="logout()" class="nav-item logout-btn">
-        Выйти
-      </button>
+      <a routerLink="/profile" routerLinkActive="active" class="nav-item profile-item">Profile</a>
+      <button (click)="logout()" class="nav-item logout-btn">Sign out</button>
     </div>
   </nav>
 
-  <!-- Основное содержание -->
   <main class="main-content">
     <router-outlet></router-outlet>
   </main>

@@ -46,7 +46,7 @@ export class LoginComponent {
       .subscribe({
         // FIX: было navigate(['/']) → бесконечный редирект т.к. маршрут 'home' не создан
         // Редиректим на /profile до тех пор, пока команда не добавит /home
-        next: () => this.router.navigate(['/profile']),
+        next: () => this.router.navigate(['/home']),
         error: (err) => {
           this.errorMsg = parseBackendErrors(err);
           this.loading = false;

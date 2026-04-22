@@ -1,6 +1,6 @@
 import { LucideAngularModule, Search, X, MapPin, Calendar, Package, Phone, Key, FileText, Backpack, Shirt } from 'lucide-angular';
 import { Component, OnInit } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ItemService } from '../../services/item';
 import { Item } from '../../models/item';
@@ -8,7 +8,7 @@ import { Item } from '../../models/item';
 @Component({
   selector: 'app-item-list',
   standalone: true,
-  imports: [RouterLink, FormsModule,LucideAngularModule],
+  imports: [RouterLink, FormsModule, LucideAngularModule],
   templateUrl: './item-list.html',
   styleUrl: './item-list.css'
 })
@@ -23,9 +23,33 @@ export class ItemList implements OnInit {
   readonly FileText = FileText;
   readonly Backpack = Backpack;
   readonly Shirt = Shirt;
+
   items: Item[] = [];
   errorMessage = '';
   loading = false;
+  pageTitle = 'All items';
+  pageDescription = 'Browse every published lost-and-found listing in one place.';
+
+  private readonly routeStatusMap: Record<string, string> = {
+    found: 'found',
+    lost: 'lost',
+  };
+
+  private readonly statusLabels: Record<string, string> = {
+    lost: 'Lost',
+    found: 'Found',
+    claimed: 'Claimed',
+    returned: 'Returned',
+  };
+
+  private readonly categoryLabels: Record<string, string> = {
+    phone: 'Phone',
+    keys: 'Keys',
+    documents: 'Documents',
+    backpack: 'Backpack',
+    clothes: 'Clothes',
+    other: 'Other',
+  };
 
   filters = {
     category: '',
@@ -33,10 +57,34 @@ export class ItemList implements OnInit {
     location: ''
   };
 
-  constructor(private itemService: ItemService) {}
+  constructor(
+    private itemService: ItemService,
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit() {
-    this.loadItems();
+    this.route.url.subscribe((segments) => {
+      const path = segments[0]?.path ?? 'items';
+      const routeStatus = this.routeStatusMap[path] ?? '';
+
+      this.filters = {
+        ...this.filters,
+        status: routeStatus,
+      };
+
+      if (path === 'found') {
+        this.pageTitle = 'Found items';
+        this.pageDescription = 'Review recovered belongings and help owners identify them quickly.';
+      } else if (path === 'lost') {
+        this.pageTitle = 'Lost items';
+        this.pageDescription = 'Focus on active loss reports and check whether you have seen a match.';
+      } else {
+        this.pageTitle = 'All items';
+        this.pageDescription = 'Browse every published lost-and-found listing in one place.';
+      }
+
+      this.loadItems();
+    });
   }
 
   loadItems() {
@@ -44,12 +92,10 @@ export class ItemList implements OnInit {
     this.errorMessage = '';
     this.itemService.getItems(this.filters).subscribe({
       next: (data) => {
-        console.log('Items received:', data);
         this.items = data;
         this.loading = false;
       },
-      error: (err) => {
-        console.log('Error:', err);
+      error: () => {
         this.errorMessage = 'Failed to load items. Please try again.';
         this.loading = false;
       }
@@ -61,7 +107,20 @@ export class ItemList implements OnInit {
   }
 
   clearFilters() {
-    this.filters = { category: '', status: '', location: '' };
+    const path = this.route.snapshot.url[0]?.path ?? 'items';
+    this.filters = {
+      category: '',
+      status: this.routeStatusMap[path] ?? '',
+      location: ''
+    };
     this.loadItems();
+  }
+
+  getStatusLabel(status: string): string {
+    return this.statusLabels[status] ?? status;
+  }
+
+  getCategoryLabel(category: string): string {
+    return this.categoryLabels[category] ?? category;
   }
 }
