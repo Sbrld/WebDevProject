@@ -1,8 +1,9 @@
-import { Component, signal, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, signal, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MessageService, Conversation, ThreadMessage, UserSummary } from '../message.service';
 import { ClaimService, Claim } from '../claim.service';
+import { AuthService } from '../core/services/auth.service';
 
 @Component({
   selector: 'app-messenger',
@@ -11,10 +12,9 @@ import { ClaimService, Claim } from '../claim.service';
   templateUrl: './messenger.html',
   styleUrl: './messenger.css',
 })
-export class MessengerComponent {
+export class MessengerComponent implements OnInit {
   @ViewChild('chatMessages') chatMessagesRef!: ElementRef;
 
-  userId = '';
   conversations = signal<Conversation[]>([]);
   selectedConv = signal<Conversation | null>(null);
   threadMessages = signal<ThreadMessage[]>([]);
@@ -36,16 +36,19 @@ export class MessengerComponent {
   constructor(
     private messageService: MessageService,
     private claimService: ClaimService,
+    private auth: AuthService,
   ) {}
 
+  ngOnInit(): void {
+    this.loadConversations();
+  }
+
   loadConversations(): void {
-    const id = parseInt(this.userId, 10);
-    if (!id) return;
     this.loading.set(true);
     this.error.set('');
     this.selectedConv.set(null);
     this.threadMessages.set([]);
-    this.messageService.getConversations(id).subscribe({
+    this.messageService.getConversations().subscribe({
       next: (data) => {
         this.conversations.set(data);
         this.loading.set(false);
@@ -117,7 +120,7 @@ export class MessengerComponent {
   }
 
   submitNewConv(): void {
-    const uid = parseInt(this.userId, 10);
+    const uid = this.auth.currentUser()?.id;
     const claimId = parseInt(this.newConvClaimId, 10);
     const recipientId = parseInt(this.newConvRecipientId, 10);
     const content = this.newConvContent.trim();
@@ -148,7 +151,7 @@ export class MessengerComponent {
   }
 
   isMine(msg: ThreadMessage): boolean {
-    return msg.sender === parseInt(this.userId, 10);
+    return msg.sender === this.auth.currentUser()?.id;
   }
 
   trackConv(_: number, conv: Conversation): string {

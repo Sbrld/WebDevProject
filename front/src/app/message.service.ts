@@ -46,8 +46,8 @@ export class MessageService {
 
   constructor(private http: HttpClient) {}
 
-  getConversations(userId: number): Observable<Conversation[]> {
-    return this.http.get<Conversation[]>(`${this.apiUrl}conversations/?user_id=${userId}`);
+  getConversations(): Observable<Conversation[]> {
+    return this.http.get<Conversation[]>(`${this.apiUrl}conversations/`);
   }
 
   getThread(claimId: number, senderId: number, recipientId: number): Observable<ThreadMessage[]> {

@@ -2,19 +2,7 @@
   <div class="messenger-header">
     <h1 class="messenger-title">Messages</h1>
     <div class="messenger-actions">
-      <div class="user-selector">
-        <input
-          type="number"
-          [(ngModel)]="userId"
-          placeholder="User ID"
-          class="user-input"
-          (keyup.enter)="loadConversations()"
-        />
-        <button class="btn-load" (click)="loadConversations()">Load</button>
-      </div>
-      @if (userId) {
-        <button class="btn-new-conv" (click)="openNewConv()">+ New Conversation</button>
-      }
+      <button class="btn-new-conv" (click)="openNewConv()">+ New Conversation</button>
     </div>
   </div>
 
@@ -27,11 +15,8 @@
       @if (error()) {
         <div class="state-error">{{ error() }}</div>
       }
-      @if (!loading() && !error() && userId && conversations().length === 0) {
+      @if (!loading() && !error() && conversations().length === 0) {
         <div class="state-msg">No conversations yet.</div>
-      }
-      @if (!userId) {
-        <div class="state-msg">Enter a user ID to load messages.</div>
       }
       <ul class="conv-list">
         @for (conv of conversations(); track trackConv($index, conv)) {

@@ -1,6 +1,7 @@
 from django.db.models import Q
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from django.contrib.auth.models import User
 from .models import Claim, Message
@@ -25,6 +26,7 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
 class MessageViewSet(viewsets.ModelViewSet):
     queryset = Message.objects.select_related('claim', 'sender', 'recipient').order_by('created_at')
     serializer_class = MessageSerializer
+    permission_classes = [IsAuthenticated]
 
     @action(detail=False, methods=['get'])
     def thread(self, request):
@@ -49,13 +51,7 @@ class MessageViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['get'])
     def conversations(self, request):
-        user_id = request.query_params.get('user_id')
-        if not user_id:
-            return Response({'error': 'user_id is required'}, status=status.HTTP_400_BAD_REQUEST)
-        try:
-            user_id = int(user_id)
-        except ValueError:
-            return Response({'error': 'user_id must be an integer'}, status=status.HTTP_400_BAD_REQUEST)
+        user_id = request.user.id
 
         messages = (
             Message.objects.filter(Q(sender_id=user_id) | Q(recipient_id=user_id))
