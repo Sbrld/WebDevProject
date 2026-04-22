@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { MessengerComponent } from './messenger/messenger';
 
 import { HomeComponent } from './features/home/home';
 
@@ -8,9 +9,10 @@ import { ItemCreate } from './components/item-create/item-create';
 import { MyItems } from './components/my-items/my-items';
 
 import { authGuard } from './core/guards/auth.guard';
-import {ProfileComponent} from './features/auth/profile/profile';
-import {RegisterComponent} from './features/auth/register/register';
-import {LoginComponent} from './features/auth/login/login';
+import { ProfileComponent } from './features/auth/profile/profile';
+import { RegisterComponent } from './features/auth/register/register';
+import { LoginComponent } from './features/auth/login/login';
+import { CreateClaimComponent } from './create-claim/create-claim';
 
 export const routes: Routes = [
   // Редирект на логин по умолчанию
@@ -19,7 +21,6 @@ export const routes: Routes = [
   // Публичные страницы (доступны без логина)
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
-
 
   // Защищённые страницы (только после логина)
   {
@@ -34,7 +35,6 @@ export const routes: Routes = [
     canActivate: [authGuard]
   },
 
-  // Заглушки для будущих страниц
   {
     path: 'items',
     component: ItemList,
@@ -63,9 +63,10 @@ export const routes: Routes = [
 
   { path: 'item/:id', component: ItemDetail, canActivate: [authGuard] },
 
-  // Заглушки для Claim и Messenger (пока не готовы)
-  { path: 'claims', redirectTo: '/home', pathMatch: 'full' },
-  { path: 'messages', redirectTo: '/home', pathMatch: 'full' },
+  // Страницы из feature/claims
+  { path: 'claims', component: CreateClaimComponent, canActivate: [authGuard] },
+  { path: 'messages', component: MessengerComponent, canActivate: [authGuard] },
+
   // Если ввели неправильный адрес — отправляем на логин
   { path: '**', redirectTo: '/login' }
 ];
