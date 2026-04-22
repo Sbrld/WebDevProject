@@ -34,7 +34,6 @@ export interface UserSummary {
 
 export interface NewMessage {
   claim: number;
-  sender: number;
   recipient: number;
   content: string;
 }

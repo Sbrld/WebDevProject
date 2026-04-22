@@ -22,12 +22,16 @@ class ClaimViewSet(viewsets.ModelViewSet):
 class UserViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = User.objects.filter(is_active=True).order_by('username')
     serializer_class = UserSerializer
+    permission_classes = [IsAuthenticated]
 
 
 class MessageViewSet(viewsets.ModelViewSet):
     queryset = Message.objects.select_related('claim', 'sender', 'recipient').order_by('created_at')
     serializer_class = MessageSerializer
     permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        serializer.save(sender=self.request.user)
 
     @action(detail=False, methods=['get'])
     def thread(self, request):
@@ -39,11 +43,19 @@ class MessageViewSet(viewsets.ModelViewSet):
                 {'error': 'claim, sender, and recipient are required'},
                 status=status.HTTP_400_BAD_REQUEST,
             )
+        participant_ids = {str(request.user.id)}
+        if sender_id not in participant_ids and recipient_id not in participant_ids:
+            return Response(
+                {'error': 'You do not have access to this conversation.'},
+                status=status.HTTP_403_FORBIDDEN,
+            )
         messages = (
             Message.objects.filter(
-                claim_id=claim_id,
-                sender_id=sender_id,
-                recipient_id=recipient_id,
+                claim_id=claim_id
+            )
+            .filter(
+                Q(sender_id=sender_id, recipient_id=recipient_id) |
+                Q(sender_id=recipient_id, recipient_id=sender_id)
             )
             .select_related('sender', 'recipient')
             .order_by('created_at')
@@ -64,13 +76,15 @@ class MessageViewSet(viewsets.ModelViewSet):
         for msg in messages:
             key = (msg.claim_id, msg.sender_id, msg.recipient_id)
             other = msg.recipient if msg.sender_id == user_id else msg.sender
+            pair = tuple(sorted((user_id, other.id)))
+            key = (msg.claim_id, pair[0], pair[1])
             if key not in threads:
                 threads[key] = {
                     'claim_id': msg.claim_id,
                     'claim_title': msg.claim.title,
                     'claim_status': msg.claim.status,
-                    'sender_id': msg.sender_id,
-                    'recipient_id': msg.recipient_id,
+                    'sender_id': pair[0],
+                    'recipient_id': pair[1],
                     'other_user_id': other.id,
                     'other_user_name': other.get_full_name() or other.username,
                     'last_message': msg.content,

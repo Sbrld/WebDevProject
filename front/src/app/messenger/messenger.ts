@@ -86,12 +86,12 @@ export class MessengerComponent implements OnInit {
   sendMessage(): void {
     const conv = this.selectedConv();
     const content = this.newMessage.trim();
-    if (!conv || !content || this.sending()) return;
+    const currentUserId = this.auth.currentUser()?.id;
+    if (!conv || !content || !currentUserId || this.sending()) return;
     this.sending.set(true);
     this.messageService.sendMessage({
       claim: conv.claim_id,
-      sender: conv.sender_id,
-      recipient: conv.recipient_id,
+      recipient: conv.other_user_id,
       content,
     }).subscribe({
       next: (msg) => {
@@ -117,7 +117,10 @@ export class MessengerComponent implements OnInit {
     this.showNewConv = true;
     this.newConvError.set('');
     this.claimService.getClaims().subscribe((c) => this.claims.set(c));
-    this.messageService.getUsers().subscribe((u) => this.users.set(u));
+    this.messageService.getUsers().subscribe((u) => {
+      const currentUserId = this.auth.currentUser()?.id;
+      this.users.set(u.filter((user) => user.id !== currentUserId));
+    });
   }
 
   submitNewConv(): void {
@@ -131,7 +134,7 @@ export class MessengerComponent implements OnInit {
     }
     this.newConvLoading.set(true);
     this.newConvError.set('');
-    this.messageService.sendMessage({ claim: claimId, sender: uid, recipient: recipientId, content }).subscribe({
+    this.messageService.sendMessage({ claim: claimId, recipient: recipientId, content }).subscribe({
       next: () => {
         this.showNewConv = false;
         this.newConvClaimId = '';

@@ -40,10 +40,19 @@ class MessageSerializer(serializers.ModelSerializer):
             'recipient', 'recipient_name',
             'content', 'is_read', 'created_at',
         ]
-        read_only_fields = ['created_at', 'sender_name', 'recipient_name']
+        read_only_fields = ['created_at', 'sender', 'sender_name', 'recipient_name']
 
     def get_sender_name(self, obj):
         return obj.sender.get_full_name() or obj.sender.username
 
     def get_recipient_name(self, obj):
         return obj.recipient.get_full_name() or obj.recipient.username
+
+    def validate(self, attrs):
+        request = self.context.get('request')
+        recipient = attrs.get('recipient')
+
+        if request and recipient and request.user == recipient:
+            raise serializers.ValidationError({'recipient': 'You cannot message yourself.'})
+
+        return attrs
